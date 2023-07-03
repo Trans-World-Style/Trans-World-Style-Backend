@@ -1,29 +1,33 @@
 package com.example.transback.controller;
 
-import com.example.transback.VideoVO;
+import com.example.transback.dto.VideoDTO;
 import com.example.transback.service.FileUploadService;
 import com.example.transback.service.VideoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
+
+import static com.example.transback.util.JwtUtil.extractEmailFromJWT;
+import static com.example.transback.util.JwtUtil.validateJWT;
 
 
 @RestController
+@RequestMapping("/video")
 @CrossOrigin(origins = "http://localhost:3000")
 public class VideoController {
+
     @Autowired
     VideoService videoService;
 
@@ -34,75 +38,84 @@ public class VideoController {
         this.fileUploadService = fileUploadService;
     }
 
-    @GetMapping("/test")
-    public String list() {
-        return "index";
-    }
-
-
-    @GetMapping("videoList")
-    public List<VideoVO> findAll() {
-        List<VideoVO> list = videoService.findAll();
+    @GetMapping("/list")
+    public List<VideoDTO> findAll() {
+        List<VideoDTO> list = videoService.findAll();
         System.out.println("controller result>> " + list);
         //model.addAttribute("list", list);
         return list;
     }
 
-    @GetMapping("videoDetail")
-    public Optional<VideoVO> read(VideoVO vo) {
-        Optional<VideoVO> one = videoService.findById(vo.getVideo_id());
-        System.out.println("controller result>> " + one);
-        //model.addAttribute("vo", one);
-        return one;
+    @PostMapping("/list/email")
+    public ResponseEntity<List<VideoDTO>> findVideosByEmailAndDeleteZero(HttpServletRequest request) {
+        // JWT 토큰에서 이메일 추출
+        String jwt = request.getHeader("Authorization");
+        jwt = jwt.replace("Bearer ", ""); // "Bearer " 접두사 제거
+        System.out.println(jwt);
+
+        if(validateJWT(jwt)) {
+            String email = extractEmailFromJWT(jwt); // JWT 토큰에서 이메일 추출하는 함수 호출
+            System.out.println(email);
+            List<VideoDTO> list = videoService.findVideosByEmailAndDeleteZero(email);
+            System.out.println("controller result>> " + list);
+            return ResponseEntity.ok(list);
+        }
+        else{
+            return ResponseEntity.badRequest().build();
+        }
     }
 
-    @PostMapping ("/upload/video")
-    public VideoVO save(HttpServletRequest request, MultipartFile file) throws Exception{
+    //@PostMapping("/detail")
+    //public Optional<VideoDTO> read(VideoDTO vo) {
+    //    Optional<VideoDTO> one = videoService.findById(vo.getVideo_id());
+    //    System.out.println("controller result>> " + one);
+    //    return one;
+    //}
 
+    @PostMapping ("/upload")
+    public Object save(HttpServletRequest request, MultipartFile file) throws Exception{
         System.out.println("(Controller) insert 요청");
-        String time = CurrentDate() + CurrentTime();
         String savedName0 = file.getOriginalFilename();
-        String savedName = time + savedName0;
+        String randomUUID = UUID.randomUUID().toString(); // 랜덤한 UUID 생성
+        String savedName = randomUUID + savedName0;
+
         System.out.println(savedName);
+        VideoDTO vo = new VideoDTO();
 
-//        String uploadPath = request.getSession().getServletContext().getRealPath("/upload");
-//        File target = new File(uploadPath + "/" + savedName);
-//        file.transferTo(target);
+        // JWT 토큰에서 이메일 추출
+        String jwt = request.getHeader("Authorization");
+        jwt = jwt.replace("Bearer ", ""); // "Bearer " 접두사 제거
+        if(validateJWT(jwt)) {
+            String email = extractEmailFromJWT(jwt); // JWT 토큰에서 이메일 추출하는 함수 호출
+            System.out.println(email);
 
-        // 파일 업로드 서비스를 통해 파일 업로드
-        String uploadedFileName = fileUploadService.uploadFile(file,savedName);
+            // 현재 시간 가져오기
+            LocalDateTime currentTime = LocalDateTime.now();
 
-        VideoVO vo = new VideoVO();
-        vo.setVideo_link(savedName);
-        System.out.println(vo);
-        VideoVO vo2 = videoService.save(vo);
-        //model.addAttribute("result", vo2);
-        return vo2;
+            // 파일 업로드 서비스를 통해 파일 업로드
+            String uploadedFileName = fileUploadService.uploadFile(file, savedName);
+
+            vo.setVideo_link(savedName);
+            vo.setVideo_name(savedName0);
+            vo.setUpload_time(currentTime);
+            vo.setDelete_state(0);
+            vo.setEmail(email);
+            System.out.println(vo);
+            VideoDTO vo2 = videoService.save(vo);
+            return vo2;
+
+            //model.addAttribute("result", vo2);
+        }
+        else{
+            System.out.println("인증 실패");
+            return ResponseEntity.badRequest().build();
+        }
     }
 
-
-    // 현재 시간
-    public String CurrentTime() {
-
-        // 현재 시간
-        LocalTime now = LocalTime.now();
-//		System.out.println(now); // 06:20:57.008731300
-        // 포맷 정의하기
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("-HHmmss");
-        // 포맷 적용하기
-        String formatedNow = now.format(formatter);
-        return formatedNow;
+    @PutMapping("/update/delete_state/{video_id}")
+    public VideoDTO updateDeleteState(@PathVariable("video_id") int video_id) {
+        VideoDTO updatedVideo = videoService.updateDeleteState(video_id);
+        return updatedVideo;
     }
 
-    // 오늘 날짜
-    public Date CurrentDate() {
-        // 현재 날짜 구하기
-        LocalDate now = LocalDate.now();
-        // 포맷 정의
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        // 포맷 적용
-        String formatedNow = now.format(formatter);
-        Date today = Date.valueOf(formatedNow);
-        return today;
-    }
 }
