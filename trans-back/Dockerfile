@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY . /app
 
-RUN trans-back/gradlew build
+RUN ./gradlew build
 
 EXPOSE 9090
 
