@@ -12,12 +12,14 @@ import javax.servlet.http.HttpServletRequest;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 
 import static com.example.transback.util.JwtUtil.extractEmailFromJWT;
 import static com.example.transback.util.JwtUtil.validateJWT;
@@ -25,7 +27,7 @@ import static com.example.transback.util.JwtUtil.validateJWT;
 
 @RestController
 @RequestMapping("/video")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000","http://endnjs.iptime.org:12510")
 public class VideoController {
 
     @Autowired
@@ -93,7 +95,7 @@ public class VideoController {
             LocalDateTime currentTime = LocalDateTime.now();
 
             // 파일 업로드 서비스를 통해 파일 업로드
-            String uploadedFileName = fileUploadService.uploadFile(file, savedName);
+            String uploadedFileName = fileUploadService.uploadFile(file, savedName,"upload");
 
             vo.setVideo_link(savedName);
             vo.setVideo_name(savedName0);
@@ -102,8 +104,16 @@ public class VideoController {
             vo.setEmail(email);
             System.out.println(vo);
             VideoDTO vo2 = videoService.save(vo);
-            return vo2;
 
+            // 소리가 제거된 영상을 업로드
+            //File mutedVideoFile = fileUploadService.removeAudioFromVideo(file);
+            //String uploadedMutedFileName = fileUploadService.uploadFile2(mutedVideoFile, savedName, "upload-mute");
+
+            // 소리 파일을 업로드
+            //File soundFile = fileUploadService.extractAudioFromVideo(file);
+            //String uploadedSoundFileName = fileUploadService.uploadFile2(soundFile, savedName, "upload-sound");
+
+            return vo2;
             //model.addAttribute("result", vo2);
         }
         else{
