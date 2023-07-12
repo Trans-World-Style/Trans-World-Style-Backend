@@ -3,7 +3,7 @@ version: '3.7'
 services:
   spring_service:
     build:
-      context: .
+      context: ./trans-back
     container_name: spring
     ports:
       - 12521:9090
