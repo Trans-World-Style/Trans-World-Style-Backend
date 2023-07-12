@@ -4,8 +4,8 @@ WORKDIR /app
 
 COPY . /app
 
-RUN ./gradlew build
-
-EXPOSE 9090
-
-CMD ["java", "-jar", "build/libs/*.jar"]
+#RUN ./gradlew build
+#
+#EXPOSE 9090
+#
+#CMD ["java", "-jar", "build/libs/*.jar"]
