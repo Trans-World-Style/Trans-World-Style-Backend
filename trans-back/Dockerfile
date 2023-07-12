@@ -1,8 +1,10 @@
 FROM eclipse/ubuntu_jdk8:latest
 
+USER root
+
 WORKDIR /app
 
-COPY . /app
+COPY . .
 
 RUN ./gradlew build
 
