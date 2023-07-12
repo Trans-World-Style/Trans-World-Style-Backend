@@ -1,0 +1,12 @@
+version: '3.7'
+
+services:
+  spring_service:
+    build:
+      context: .
+    container_name: spring
+    ports:
+      - 12521:9090
+      - 12529:22
+    stdin_open: true
+    tty: true
