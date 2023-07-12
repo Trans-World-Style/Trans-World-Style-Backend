@@ -27,7 +27,7 @@ import static com.example.transback.util.JwtUtil.validateJWT;
 
 @RestController
 @RequestMapping("/video")
-@CrossOrigin(origins = "http://localhost:3000","http://endnjs.iptime.org:12510")
+@CrossOrigin(origins = {"http://localhost:3000","http://endnjs.iptime.org:12510"})
 public class VideoController {
 
     @Autowired
