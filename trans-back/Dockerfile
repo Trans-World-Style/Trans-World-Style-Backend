@@ -10,4 +10,4 @@ RUN ./gradlew build
 
 EXPOSE 9090
 
-CMD ["java", "-jar", "build/libs/*.jar"]
+#CMD ["java", "-jar", "build/libs/*.jar"]
