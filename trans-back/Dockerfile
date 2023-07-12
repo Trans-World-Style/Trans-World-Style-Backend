@@ -2,7 +2,7 @@ FROM eclipse/ubuntu_jdk8:latest
 
 WORKDIR /app
 
-COPY . /app
+COPY . .
 
 #RUN ./gradlew build
 #
