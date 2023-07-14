@@ -15,6 +15,11 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.nio.file.Files;
 
+import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
+import java.net.URL;
+import java.util.Date;
+
+
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
 import org.apache.commons.io.FileUtils;
@@ -39,9 +44,26 @@ public class FileUploadService {
         String key = folderName + "/" + savedName;
 
         // S3에 파일 업로드
-        amazonS3.putObject(new PutObjectRequest(bucketName, key, file.getInputStream(), null).withCannedAcl(CannedAccessControlList.PublicRead));
+        amazonS3.putObject(new PutObjectRequest(bucketName, key, file.getInputStream(), null).withCannedAcl(CannedAccessControlList.Private));
 
         return savedName;
+    }
+
+    public String generateSignedURL(String savedName,String folderName, long expirationTimeInMilliseconds) {
+        String key = folderName + "/" + savedName;
+        Date expiration = new Date(System.currentTimeMillis() + expirationTimeInMilliseconds);
+        GeneratePresignedUrlRequest generatePresignedUrlRequest = new GeneratePresignedUrlRequest(bucketName, key)
+                .withExpiration(expiration);
+        URL signedURL = amazonS3.generatePresignedUrl(generatePresignedUrlRequest);
+        return signedURL.toString();
+    }
+
+    public String generateSignedURL2(String key, long expirationTimeInMilliseconds) {
+        Date expiration = new Date(System.currentTimeMillis() + expirationTimeInMilliseconds);
+        GeneratePresignedUrlRequest generatePresignedUrlRequest = new GeneratePresignedUrlRequest(bucketName, key)
+                .withExpiration(expiration);
+        URL signedURL = amazonS3.generatePresignedUrl(generatePresignedUrlRequest);
+        return signedURL.toString();
     }
 
     public String uploadFile2(File file, String savedName, String folderName) throws IOException {
