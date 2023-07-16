@@ -6,7 +6,7 @@ services:
       context: ./trans-back
     container_name: spring
     volumes:
-      - ssl_certbot-etc:/src:ro
+      - ssl_certbot-etc:/src
     # environment:
     #   - DOMAIN=tw-style.duckdns.org
     ports:
