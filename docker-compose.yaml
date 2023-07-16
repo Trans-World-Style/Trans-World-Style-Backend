@@ -13,7 +13,7 @@ services:
       - "12520:9090"
       - "12529:22"
     stdin_open: true
-    # command: bash
+    command: bash
     tty: true
 
 volumes:
