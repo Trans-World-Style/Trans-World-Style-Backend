@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: software.amazon.awssdk:aws-xml-protocol:2.17.20">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/software.amazon.awssdk/aws-xml-protocol/2.17.20/567e4e38f9fdcac9e4159c1333468dcdd9475b4b/aws-xml-protocol-2.17.20.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/software.amazon.awssdk/aws-xml-protocol/2.17.20/fa11ab7a3c4705ea944ae897e36e32381735f574/aws-xml-protocol-2.17.20-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
