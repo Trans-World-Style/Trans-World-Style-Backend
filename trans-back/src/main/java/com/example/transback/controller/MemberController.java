@@ -22,13 +22,13 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/member")
-@CrossOrigin(origins = {"http://localhost:3000","http://endnjs.iptime.org:12510"})
+@CrossOrigin(origins = {"http://localhost:3000","http://endnjs.iptime.org:12510","https://tws-upscale.ddns.net"})
 public class MemberController {
 
     @Autowired
     private MemberService memberService;
 
-    private final String CLIENT_ID = "442162610606-mm4d0i5vmbdjai0agdbmgqcp07n7pnm4.apps.googleusercontent.com";
+    private final String CLIENT_ID = "585543292084-nglvej9fqvsm7in5bgev62scqbqpnllr.apps.googleusercontent.com";
 
     @PostMapping("/auth")
     public ResponseEntity<?> authenticateUser(@RequestBody Map<String, String> requestBody) {
