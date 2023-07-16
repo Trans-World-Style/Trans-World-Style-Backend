@@ -1,5 +1,6 @@
 # Build stage
 FROM eclipse/ubuntu_jdk8 as build
+USER root
 WORKDIR /app
 COPY . .
 RUN chmod +x ./gradlew
