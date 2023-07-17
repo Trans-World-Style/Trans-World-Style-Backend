@@ -22,7 +22,8 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/member")
-@CrossOrigin(origins = {"http://localhost:3000","http://endnjs.iptime.org:12510","https://tw-style.duckdns.org:12510"})
+//@CrossOrigin(origins = {"http://localhost:3000","https://tw-style.duckdns.org"})
+@CrossOrigin(origins = "https://tw-style.duckdns.org")
 public class MemberController {
 
     @Autowired
