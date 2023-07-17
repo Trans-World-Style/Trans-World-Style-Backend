@@ -5,17 +5,9 @@ services:
     build:
       context: ./trans-back
     container_name: spring
-    volumes:
-      - ssl_certbot-etc:/src
-    # environment:
-    #   - DOMAIN=tw-style.duckdns.org
     ports:
       - "12520:9090"
       - "12529:22"
-    stdin_open: true
-    command: bash
-    tty: true
-
-volumes:
-  ssl_certbot-etc:
-    external: true
+#    stdin_open: true
+#    command: bash
+#    tty: true
