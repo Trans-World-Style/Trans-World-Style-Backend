@@ -20,6 +20,8 @@ public class VideoDTO {
 	private int video_id;
 	private String email;
 	private String video_link;
+	private String upload_url;
+	private String output_url;
 	private String video_name;
 	private LocalDateTime upload_time;
 	private Integer delete_state;

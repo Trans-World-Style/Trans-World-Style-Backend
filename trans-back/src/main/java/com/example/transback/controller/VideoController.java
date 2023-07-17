@@ -132,6 +132,7 @@ public class VideoController {
             long expirationTimeInMilliseconds = 3600000;
             String signedURL = fileUploadService.generateSignedURL(savedName,"upload", expirationTimeInMilliseconds);
             System.out.println(signedURL);
+            vo.setUpload_url(signedURL);
 
             // AI 서버의 API에 요청
             String aiServerUrl = "http://endnjs.iptime.org:12530/upscale_video?key=upload/" + savedName;
@@ -145,6 +146,7 @@ public class VideoController {
 
                 long expirationTimeInMilliseconds2 = 3600000;
                 String signedURL2 = fileUploadService.generateSignedURL2(result, expirationTimeInMilliseconds);
+                vo.setOutput_url(signedURL2);
 
                 return ResponseEntity.ok(signedURL2);
 

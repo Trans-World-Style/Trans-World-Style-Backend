@@ -52,8 +52,8 @@ public class FileUploadService {
     public String generateSignedURL(String savedName,String folderName, long expirationTimeInMilliseconds) {
         String key = folderName + "/" + savedName;
         Date expiration = new Date(System.currentTimeMillis() + expirationTimeInMilliseconds);
-        GeneratePresignedUrlRequest generatePresignedUrlRequest = new GeneratePresignedUrlRequest(bucketName, key)
-                .withExpiration(expiration);
+        GeneratePresignedUrlRequest generatePresignedUrlRequest = new GeneratePresignedUrlRequest(bucketName, key);
+//                .withExpiration(expiration);
         URL signedURL = amazonS3.generatePresignedUrl(generatePresignedUrlRequest);
         return signedURL.toString();
     }
