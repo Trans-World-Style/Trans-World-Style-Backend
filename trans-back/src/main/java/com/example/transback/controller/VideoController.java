@@ -126,7 +126,7 @@ public class VideoController {
             vo.setDelete_state(0);
             vo.setEmail(email);
             System.out.println(vo);
-            VideoDTO vo2 = videoService.save(vo);
+//            VideoDTO vo2 = videoService.save(vo);
 
             // 서명된 URL 생성
             long expirationTimeInMilliseconds = 3600000;
@@ -147,6 +147,7 @@ public class VideoController {
                 long expirationTimeInMilliseconds2 = 3600000;
                 String signedURL2 = fileUploadService.generateSignedURL2(result, expirationTimeInMilliseconds);
                 vo.setOutput_url(signedURL2);
+                videoService.save(vo);
 
                 return ResponseEntity.ok(signedURL2);
 
