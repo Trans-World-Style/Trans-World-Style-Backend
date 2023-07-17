@@ -20,6 +20,10 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Map;
 
+import org.springframework.web.bind.annotation.CookieValue;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 @RestController
 @RequestMapping("/member")
 //@CrossOrigin(origins = {"http://localhost:3000","https://tw-style.duckdns.org"})
@@ -32,7 +36,7 @@ public class MemberController {
     private final String CLIENT_ID = "585543292084-nglvej9fqvsm7in5bgev62scqbqpnllr.apps.googleusercontent.com";
 
     @PostMapping("/auth")
-    public ResponseEntity<?> authenticateUser(@RequestBody Map<String, String> requestBody) {
+    public ResponseEntity<?> authenticateUser(@RequestBody Map<String, String> requestBody,HttpServletResponse response) {
         String googleIdToken = requestBody.get("id_token");
         System.out.println(googleIdToken);
         // 구글 ID 토큰 유효성 검사 및 가져오기
@@ -72,6 +76,12 @@ public class MemberController {
                 // 토큰이 유효하면 JWT 생성 및 반환
 
                 String jwt = JwtUtil.generateJWT(email);
+
+                // JWT 토큰을 HTTP-only 쿠키에 설정하여 응답에 포함시킴
+                Cookie jwtCookie = new Cookie("jwt", jwt);
+                jwtCookie.setHttpOnly(true);
+                response.addCookie(jwtCookie);
+
                 return ResponseEntity.ok(new AuthResponse(jwt));
             } else {
                 // 유효하지 않은 토큰
