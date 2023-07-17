@@ -35,7 +35,7 @@ import org.springframework.web.client.RestTemplate;
 @RestController
 @RequestMapping("/video")
 //@CrossOrigin(origins = {"http://localhost:3000","https://tw-style.duckdns.org"})
-@CrossOrigin(origins = "https://tw-style.duckdns.org")
+@CrossOrigin(origins = "https://tw-style.duckdns.org:12510")
 public class VideoController {
 
     @Autowired
