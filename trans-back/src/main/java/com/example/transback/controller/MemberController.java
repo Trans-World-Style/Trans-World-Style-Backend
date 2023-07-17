@@ -79,7 +79,10 @@ public class MemberController {
 
                 // JWT 토큰을 HTTP-only 쿠키에 설정하여 응답에 포함시킴
                 Cookie jwtCookie = new Cookie("jwt", jwt);
+                jwtCookie.setPath("/"); // 쿠키의 유효 경로 설정
                 jwtCookie.setHttpOnly(true);
+                jwtCookie.setSecure(true); // HTTPS에서만 쿠키 전송
+                jwtCookie.setMaxAge(7 * 24 * 60 * 60); // 쿠키의 유효 기간 설정 (7일)
                 response.addCookie(jwtCookie);
 
                 return ResponseEntity.ok(new AuthResponse(jwt));
