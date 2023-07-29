@@ -12,6 +12,7 @@ import java.util.Date;
 
 public class JwtUtil {
     public static final String SECRET_KEY = generateSecretKey(); // 시크릿 키 설정
+//    public static final String SECRET_KEY ="YOUR_TEST_SECRET_KEY";
     public static final long EXPIRATION_TIME = 86400000; // JWT 만료 시간 설정 (24시간)
 
     public static String generateJWT(String email) {

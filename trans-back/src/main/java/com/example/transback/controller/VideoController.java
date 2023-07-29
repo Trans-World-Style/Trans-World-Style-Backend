@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.Date;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -34,8 +32,8 @@ import org.springframework.web.client.RestTemplate;
 
 @RestController
 @RequestMapping("/video")
-//@CrossOrigin(origins = {"http://localhost:3000","https://tw-style.duckdns.org"})
-@CrossOrigin(origins = "https://tw-style.duckdns.org:12510")
+//@CrossOrigin(origins = "https://tw-style.duckdns.org:12510")
+@CrossOrigin(origins = "${cors.origin}")
 public class VideoController {
 
     @Autowired
@@ -43,6 +41,8 @@ public class VideoController {
 
     private final RestTemplate restTemplate;
     private final FileUploadService fileUploadService;
+
+
 
     @Autowired
     public VideoController(RestTemplate restTemplate, FileUploadService fileUploadService) {
@@ -139,7 +139,7 @@ public class VideoController {
             ResponseEntity<AIResponse> aiResponse = restTemplate.postForEntity(aiServerUrl, null, AIResponse.class);
 
             // AI 서버의 응답 데이터 처리
-            if (aiResponse.getStatusCode().is2xxSuccessful()) {
+            if (aiResponse != null && aiResponse.getStatusCode().is2xxSuccessful()) {
                 AIResponse responseBody = aiResponse.getBody();
                 String result = responseBody.getResult();
                 System.out.println("AI Server Response: " + result);
@@ -157,10 +157,8 @@ public class VideoController {
             }
 
             // 서명된 URL을 프론트엔드에 반환
-//            return ResponseEntity.ok(signedURL);
+            //return ResponseEntity.ok(signedURL);
             //return ResponseEntity.ok(result);
-
-
 
             // 소리가 제거된 영상을 업로드
             //File mutedVideoFile = fileUploadService.removeAudioFromVideo(file);
@@ -168,7 +166,6 @@ public class VideoController {
             // 소리 파일을 업로드
             //File soundFile = fileUploadService.extractAudioFromVideo(file);
             //String uploadedSoundFileName = fileUploadService.uploadFile2(soundFile, savedName, "upload-sound");
-
             //return vo2;
             //model.addAttribute("result", vo2);
         }

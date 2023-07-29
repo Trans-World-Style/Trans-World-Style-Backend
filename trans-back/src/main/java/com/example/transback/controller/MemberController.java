@@ -11,6 +11,7 @@ import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,14 +27,16 @@ import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/member")
-//@CrossOrigin(origins = {"http://localhost:3000","https://tw-style.duckdns.org"})
-@CrossOrigin(origins = "https://tw-style.duckdns.org:12510")
+//@CrossOrigin(origins = "https://tw-style.duckdns.org:12510")
+@CrossOrigin(origins = "${cors.origin}")
 public class MemberController {
 
     @Autowired
     private MemberService memberService;
 
-    private final String CLIENT_ID = "585543292084-nglvej9fqvsm7in5bgev62scqbqpnllr.apps.googleusercontent.com";
+    @Value("${google.client-id}")
+    private String CLIENT_ID;
+//    private final String CLIENT_ID = "585543292084-nglvej9fqvsm7in5bgev62scqbqpnllr.apps.googleusercontent.com";
 
     @PostMapping("/auth")
     public ResponseEntity<?> authenticateUser(@RequestBody Map<String, String> requestBody,HttpServletResponse response) {
