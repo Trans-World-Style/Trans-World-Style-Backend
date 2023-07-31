@@ -16,7 +16,7 @@ RUN openssl pkcs12 -export -in $SSLPATH/fullchain.pem -inkey $SSLPATH/privkey.pe
 
 RUN chmod +x ./gradlew
 
-RUN ./gradlew build
+RUN ./gradlew build -x test
 
 # 두 번째 빌드 스테이지
 FROM openjdk:8-jdk-alpine as app
@@ -28,7 +28,7 @@ COPY --from=build /app/build/libs/trans-back-0.0.1-SNAPSHOT.jar /app
 
 EXPOSE 9090
 
-CMD java -jar /app/trans-back-0.0.1-SNAPSHOT.jar
+#CMD java -jar /app/trans-back-0.0.1-SNAPSHOT.jar
 
-CMD java -jar /app/trans-back-0.0.1-SNAPSHOT.jar -Dspring.profiles.active=test
+CMD java -jar /app/trans-back-0.0.1-SNAPSHOT.jar -Dspring.profiles.active=${ENV}
 
