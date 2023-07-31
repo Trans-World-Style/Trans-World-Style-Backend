@@ -1,13 +1,14 @@
 version: '3.7'
 
 services:
-  spring_service-${ENV}:
+  spring_service:
     env_file:
       - .env
     build:
       context: ./trans-back
       args:
         - ENV=${ENV}
+    container_name: spring
     ports:
       - "${PORT}:9090"
 #    stdin_open: true
