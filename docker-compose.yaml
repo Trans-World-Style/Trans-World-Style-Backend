@@ -8,6 +8,7 @@ services:
       context: ./trans-back
       args:
         - ENV=${ENV}
+    container_name: spring-${ENV}
     ports:
       - "${PORT}:9090"
 #    stdin_open: true
