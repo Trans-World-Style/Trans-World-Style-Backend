@@ -44,8 +44,6 @@ public class VideoControllerTests {
     @Autowired
     private MockMvc mockMvc;
 
-
-
     @MockBean
     private RestTemplate restTemplate; // Mock으로 주입
 

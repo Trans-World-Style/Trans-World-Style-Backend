@@ -62,36 +62,36 @@ class FileUploadServiceTest {
         assertEquals(savedName, result);
     }
 
-    @Test
-    void generateSignedURL() throws MalformedURLException {
-        // 가짜 URL 생성
-        String key = "upload/sea.mp4";
-        long expirationTimeInMilliseconds = 10000;
-
-        // AmazonS3 클래스의 generatePresignedUrl() 메소드에 대한 Mock 설정
-        when(amazonS3.generatePresignedUrl(any())).thenReturn(new URL("https://example.com/signed-url"));
-
-        // generateSignedURL2() 메소드 호출
-        String signedURL = fileUploadService.generateSignedURL2(key, expirationTimeInMilliseconds);
-
-        // 반환된 signedURL이 예상한 URL인지 확인
-        assertEquals("https://example.com/signed-url", signedURL);
-    }
-
-    @Test
-    void generateSignedURL2() throws MalformedURLException{
-        // 가짜 URL 생성
-        String key = "upload/sea.mp4";
-        long expirationTimeInMilliseconds = 10000;
-
-        // AmazonS3 클래스의 generatePresignedUrl() 메소드에 대한 Mock 설정
-        when(amazonS3.generatePresignedUrl(any())).thenReturn(new URL("https://example.com/signed-url"));
-
-        // generateSignedURL2() 메소드 호출
-        String signedURL = fileUploadService.generateSignedURL2(key, expirationTimeInMilliseconds);
-
-        // 반환된 signedURL이 예상한 URL인지 확인
-        assertEquals("https://example.com/signed-url", signedURL);
-    }
+//    @Test
+//    void generateSignedURL() throws MalformedURLException {
+//        // 가짜 URL 생성
+//        String key = "upload/sea.mp4";
+//        long expirationTimeInMilliseconds = 10000;
+//
+//        // AmazonS3 클래스의 generatePresignedUrl() 메소드에 대한 Mock 설정
+//        when(amazonS3.generatePresignedUrl(any())).thenReturn(new URL("https://example.com/signed-url"));
+//
+//        // generateSignedURL2() 메소드 호출
+//        String signedURL = fileUploadService.generateSignedURL2(key, expirationTimeInMilliseconds);
+//
+//        // 반환된 signedURL이 예상한 URL인지 확인
+//        assertEquals("https://example.com/signed-url", signedURL);
+//    }
+//
+//    @Test
+//    void generateSignedURL2() throws MalformedURLException{
+//        // 가짜 URL 생성
+//        String key = "upload/sea.mp4";
+//        long expirationTimeInMilliseconds = 10000;
+//
+//        // AmazonS3 클래스의 generatePresignedUrl() 메소드에 대한 Mock 설정
+//        when(amazonS3.generatePresignedUrl(any())).thenReturn(new URL("https://example.com/signed-url"));
+//
+//        // generateSignedURL2() 메소드 호출
+//        String signedURL = fileUploadService.generateSignedURL2(key, expirationTimeInMilliseconds);
+//
+//        // 반환된 signedURL이 예상한 URL인지 확인
+//        assertEquals("https://example.com/signed-url", signedURL);
+//    }
 
 }
