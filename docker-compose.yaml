@@ -3,7 +3,7 @@ version: '3.7'
 services:
   spring_service:
     env_file:
-      - .env-${ENV}
+      - .env
     build:
       context: ./trans-back
       args:
@@ -14,3 +14,4 @@ services:
 #    stdin_open: true
 #    command: bash
 #    tty: true
+#
