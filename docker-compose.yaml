@@ -2,11 +2,15 @@ version: '3.7'
 
 services:
   spring_service:
+    env_file:
+      - .env
     build:
       context: ./trans-back
-    container_name: spring
+      args:
+        - ENV=${ENV}
+    container_name: spring-${ENV}
     ports:
-      - "12520:9090"
+      - "${PORT}:9090"
       - "12529:22"
 #    stdin_open: true
 #    command: bash

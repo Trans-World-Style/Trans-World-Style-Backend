@@ -28,7 +28,7 @@ COPY --from=build /app/build/libs/trans-back-0.0.1-SNAPSHOT.jar /app
 
 EXPOSE 9090
 
-CMD java -jar /app/trans-back-0.0.1-SNAPSHOT.jar
+#CMD java -jar /app/trans-back-0.0.1-SNAPSHOT.jar
 
-CMD java -jar /app/trans-back-0.0.1-SNAPSHOT.jar -Dspring.profiles.active=test
+CMD java -jar /app/trans-back-0.0.1-SNAPSHOT.jar -Dspring.profiles.active=${ENV}
 
