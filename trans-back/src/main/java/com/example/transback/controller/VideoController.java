@@ -32,7 +32,6 @@ import org.springframework.web.client.RestTemplate;
 
 @RestController
 @RequestMapping("/video")
-//@CrossOrigin(origins = "https://tw-style.duckdns.org:12510")
 @CrossOrigin(origins = "${cors.origin}")
 public class VideoController {
 
