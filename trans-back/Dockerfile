@@ -24,6 +24,9 @@ FROM openjdk:8-jdk-alpine as app
 WORKDIR /app
 
 # jar 파일만 복사
+COPY --from=build /app/* /app
+
+# jar 파일만 복사
 COPY --from=build /app/build/libs/trans-back-0.0.1-SNAPSHOT.jar /app
 
 EXPOSE 9090
