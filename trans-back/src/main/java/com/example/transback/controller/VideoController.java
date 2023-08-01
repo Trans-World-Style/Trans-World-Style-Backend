@@ -5,6 +5,7 @@ import com.example.transback.service.FileUploadService;
 import com.example.transback.service.VideoService;
 import org.springframework.beans.SimpleTypeConverter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -40,6 +41,9 @@ public class VideoController {
 
     private final RestTemplate restTemplate;
     private final FileUploadService fileUploadService;
+
+    @Value("${aiApi}")
+    private String aiApi;
 
 
 
@@ -134,7 +138,8 @@ public class VideoController {
             vo.setUpload_url(signedURL);
 
             // AI 서버의 API에 요청
-            String aiServerUrl = "http://endnjs.iptime.org:12530/upscale_video?key=upload/" + savedName;
+            String aiServerUrl = aiApi + savedName;
+            //String aiServerUrl = "http://endnjs.iptime.org:12530/upscale_video?key=upload/" + savedName;
             ResponseEntity<AIResponse> aiResponse = restTemplate.postForEntity(aiServerUrl, null, AIResponse.class);
 
             // AI 서버의 응답 데이터 처리
