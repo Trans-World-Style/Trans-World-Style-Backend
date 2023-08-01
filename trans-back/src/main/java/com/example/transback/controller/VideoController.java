@@ -42,8 +42,8 @@ public class VideoController {
     private final RestTemplate restTemplate;
     private final FileUploadService fileUploadService;
 
-//    @Value("${aiApi}")
-//    private String aiApi;
+    @Value("${aiApi}")
+    private String aiApi;
 
 
 
