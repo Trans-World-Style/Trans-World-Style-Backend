@@ -114,7 +114,7 @@ public class VideoControllerTests {
     }
 
     @Test
-    @DisplayName("특정 이메일로 삭제되지 않은 video 목록 가져오기 테스트")
+    @DisplayName("private video list")
     public void testFindVideosByEmailAndDeleteZero() throws Exception {
         // 가짜 JWT 토큰 생성
         //String jwtToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiZW1haWwiOiJ6enh4OTYzM0BnbWFpbC5jb20iLCJpYXQiOjE2ODk3NTk2ODAsImV4cCI6MTc3NjE1OTY4MH0.n2ZfINwuxRBWsUyzlWD9O-aGC6R1pkp0esFRi67_bSc";
@@ -158,5 +158,7 @@ public class VideoControllerTests {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].email").value(email))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].video_name").value("3번인사 제리 720p.mp4"));
     }
+
+
 
 }

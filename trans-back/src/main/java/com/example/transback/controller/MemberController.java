@@ -27,7 +27,6 @@ import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/member")
-//@CrossOrigin(origins = "https://tw-style.duckdns.org:12510")
 @CrossOrigin(origins = "${cors.origin}")
 public class MemberController {
 
