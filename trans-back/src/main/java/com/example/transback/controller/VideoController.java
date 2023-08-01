@@ -138,8 +138,8 @@ public class VideoController {
             System.out.println(vo);
 
             // AI 서버의 API에 요청
-//            String aiServerUrl = aiApi + savedName;
-            String aiServerUrl = "http://endnjs.iptime.org:12530/upscale_video?key=upload/" + savedName;
+            String aiServerUrl = aiApi + savedName;
+            //String aiServerUrl = "http://endnjs.iptime.org:12530/upscale_video?key=upload/" + savedName;
             System.out.println("1: "+aiServerUrl);
             ResponseEntity<AIResponse> aiResponse = restTemplate.postForEntity(aiServerUrl, null, AIResponse.class);
             System.out.println("2: "+aiServerUrl);
