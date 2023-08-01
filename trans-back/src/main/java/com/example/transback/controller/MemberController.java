@@ -14,13 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Map;
-
 import org.springframework.web.bind.annotation.CookieValue;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -35,7 +33,6 @@ public class MemberController {
 
     @Value("${google.client-id}")
     private String CLIENT_ID;
-//    private final String CLIENT_ID = "585543292084-nglvej9fqvsm7in5bgev62scqbqpnllr.apps.googleusercontent.com";
 
     @PostMapping("/auth")
     public ResponseEntity<?> authenticateUser(@RequestBody Map<String, String> requestBody,HttpServletResponse response) {
@@ -76,7 +73,6 @@ public class MemberController {
                 memberService.processGoogleLogin(memberDTO);
 
                 // 토큰이 유효하면 JWT 생성 및 반환
-
                 String jwt = JwtUtil.generateJWT(email);
 
                 // JWT 토큰을 HTTP-only 쿠키에 설정하여 응답에 포함시킴

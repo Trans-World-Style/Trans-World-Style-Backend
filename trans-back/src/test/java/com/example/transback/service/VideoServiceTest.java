@@ -1,6 +1,5 @@
 package com.example.transback.service;
 
-import com.example.transback.controller.VideoController;
 import com.example.transback.dao.VideoDAOInterface;
 import com.example.transback.dto.VideoDTO;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,11 +12,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,7 +23,6 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(VideoService.class)
-@ActiveProfiles("test") // 테스트 환경용 프로파일로 설정
 class VideoServiceTest {
 
     @MockBean
@@ -35,13 +31,10 @@ class VideoServiceTest {
     @InjectMocks
     private VideoService videoService;
 
-
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
     }
-
-
 
     @Test
     void findAll() {

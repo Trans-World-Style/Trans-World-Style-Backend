@@ -16,7 +16,7 @@ RUN openssl pkcs12 -export -in $SSLPATH/fullchain.pem -inkey $SSLPATH/privkey.pe
 
 RUN chmod +x ./gradlew
 
-RUN ./gradlew build -x test
+#RUN ./gradlew build -x test
 
 # 두 번째 빌드 스테이지
 FROM openjdk:8-jdk-alpine as app
