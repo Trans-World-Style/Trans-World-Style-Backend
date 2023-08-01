@@ -112,7 +112,7 @@ public class VideoController {
             vo.setEmail(email);
 
             // 서명된 URL 생성
-            long expirationTimeInMilliseconds = 3600000;
+            long expirationTimeInMilliseconds = 604800000;
             String signedURL = fileUploadService.generateSignedURL(savedName,"upload", expirationTimeInMilliseconds);
             System.out.println("upload_url: "+signedURL);
             vo.setUpload_url(signedURL);
