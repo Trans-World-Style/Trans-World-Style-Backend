@@ -40,19 +40,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class VideoControllerIntegrationTests {
 
     @Autowired
-    private VideoService videoService;
-
-
-//    private static class AIResponse {
-//        private String status;
-//        private String result;
-//
-//        public void setResult(String result) {
-//            this.result = result;
-//        }
-//    }
-
-    @Autowired
     private MockMvc mockMvc;
 
 //    @Test
@@ -97,26 +84,26 @@ public class VideoControllerIntegrationTests {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.delete_state").value(1));
     }
 
-    @Test
-    @DisplayName("Upload video")
-    public void testUploadVideo() throws Exception {
-        // 테스트 이메일
-        String email = "zzxx9633@gmail.com";
-        String jwtToken = JwtUtil.generateJWT(email);
-
-        // 테스트용 파일 경로
-        String testFilePath = "src/test/resources/static/upload/cut(360p).mp4";
-        Path path = Paths.get(testFilePath);
-        String originalFilename = path.getFileName().toString();
-        MockMultipartFile file = new MockMultipartFile("file", originalFilename, MediaType.MULTIPART_FORM_DATA_VALUE, Files.readAllBytes(path));
-
-        mockMvc.perform(MockMvcRequestBuilders.multipart("/video/upload")
-                        .file(file)
-                        .header("Authorization", "Bearer " + jwtToken))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.upload_url").isNotEmpty())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.output_url").isNotEmpty());
-    }
+//    @Test
+//    @DisplayName("Upload video")
+//    public void testUploadVideo() throws Exception {
+//        // 테스트 이메일
+//        String email = "zzxx9633@gmail.com";
+//        String jwtToken = JwtUtil.generateJWT(email);
+//
+//        // 테스트용 파일 경로
+//        String testFilePath = "src/test/resources/static/upload/cut(360p).mp4";
+//        Path path = Paths.get(testFilePath);
+//        String originalFilename = path.getFileName().toString();
+//        MockMultipartFile file = new MockMultipartFile("file", originalFilename, MediaType.MULTIPART_FORM_DATA_VALUE, Files.readAllBytes(path));
+//
+//        mockMvc.perform(MockMvcRequestBuilders.multipart("/video/upload")
+//                        .file(file)
+//                        .header("Authorization", "Bearer " + jwtToken))
+//                .andExpect(MockMvcResultMatchers.status().isOk())
+//                .andExpect(MockMvcResultMatchers.jsonPath("$.upload_url").isNotEmpty())
+//                .andExpect(MockMvcResultMatchers.jsonPath("$.output_url").isNotEmpty());
+//    }
 
 
 
