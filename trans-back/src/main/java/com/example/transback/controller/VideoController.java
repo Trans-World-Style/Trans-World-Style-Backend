@@ -42,8 +42,8 @@ public class VideoController {
     private final RestTemplate restTemplate;
     private final FileUploadService fileUploadService;
 
-    @Value("${aiApi}")
-    private String aiApi;
+//    @Value("${aiApi}")
+//    private String aiApi;
 
 
 
@@ -128,20 +128,21 @@ public class VideoController {
             vo.setUpload_time(currentTime);
             vo.setDelete_state(0);
             vo.setEmail(email);
-            System.out.println(vo);
 //            VideoDTO vo2 = videoService.save(vo);
 
             // 서명된 URL 생성
             long expirationTimeInMilliseconds = 3600000;
             String signedURL = fileUploadService.generateSignedURL(savedName,"upload", expirationTimeInMilliseconds);
-            System.out.println(signedURL);
+            System.out.println("upload_url: "+signedURL);
             vo.setUpload_url(signedURL);
+            System.out.println(vo);
 
             // AI 서버의 API에 요청
-            String aiServerUrl = aiApi + savedName;
-            //String aiServerUrl = "http://endnjs.iptime.org:12530/upscale_video?key=upload/" + savedName;
+//            String aiServerUrl = aiApi + savedName;
+            String aiServerUrl = "http://endnjs.iptime.org:12530/upscale_video?key=upload/" + savedName;
+            System.out.println("1: "+aiServerUrl);
             ResponseEntity<AIResponse> aiResponse = restTemplate.postForEntity(aiServerUrl, null, AIResponse.class);
-
+            System.out.println("2: "+aiServerUrl);
             // AI 서버의 응답 데이터 처리
             if (aiResponse != null && aiResponse.getStatusCode().is2xxSuccessful()) {
                 AIResponse responseBody = aiResponse.getBody();
