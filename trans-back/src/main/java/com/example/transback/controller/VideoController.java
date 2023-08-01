@@ -3,33 +3,20 @@ package com.example.transback.controller;
 import com.example.transback.dto.VideoDTO;
 import com.example.transback.service.FileUploadService;
 import com.example.transback.service.VideoService;
-import org.springframework.beans.SimpleTypeConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
-
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
-
 import static com.example.transback.util.JwtUtil.extractEmailFromJWT;
 import static com.example.transback.util.JwtUtil.validateJWT;
-
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-
 
 @RestController
 @RequestMapping("/video")
@@ -44,8 +31,6 @@ public class VideoController {
 
     @Value("${aiApi}")
     private String aiApi;
-
-
 
     @Autowired
     public VideoController(RestTemplate restTemplate, FileUploadService fileUploadService) {
@@ -62,9 +47,6 @@ public class VideoController {
             return result;
         }
     }
-
-
-
 
     @GetMapping("/list")
     public List<VideoDTO> findAll() {
@@ -128,7 +110,6 @@ public class VideoController {
             vo.setUpload_time(currentTime);
             vo.setDelete_state(0);
             vo.setEmail(email);
-//            VideoDTO vo2 = videoService.save(vo);
 
             // 서명된 URL 생성
             long expirationTimeInMilliseconds = 3600000;
@@ -138,8 +119,8 @@ public class VideoController {
             System.out.println(vo);
 
             // AI 서버의 API에 요청
-//            String aiServerUrl = aiApi + savedName;
-            String aiServerUrl = "http://endnjs.iptime.org:12530/upscale_video?key=upload/" + savedName;
+            String aiServerUrl = aiApi + savedName;
+            //String aiServerUrl = "http://endnjs.iptime.org:12530/upscale_video?key=upload/" + savedName;
             System.out.println("1: "+aiServerUrl);
             ResponseEntity<AIResponse> aiResponse = restTemplate.postForEntity(aiServerUrl, null, AIResponse.class);
             System.out.println("2: "+aiServerUrl);
@@ -148,38 +129,20 @@ public class VideoController {
                 AIResponse responseBody = aiResponse.getBody();
                 String result = responseBody.getResult();
                 System.out.println("AI Server Response: " + result);
-
                 long expirationTimeInMilliseconds2 = 3600000;
                 String signedURL2 = fileUploadService.generateSignedURL2(result, expirationTimeInMilliseconds);
                 vo.setOutput_url(signedURL2);
                 videoService.save(vo);
-
                 return ResponseEntity.ok(signedURL2);
-
             } else {
                 // AI 서버 요청 실패 처리
                 return ResponseEntity.badRequest().build();
             }
-
-            // 서명된 URL을 프론트엔드에 반환
-            //return ResponseEntity.ok(signedURL);
-            //return ResponseEntity.ok(result);
-
-            // 소리가 제거된 영상을 업로드
-            //File mutedVideoFile = fileUploadService.removeAudioFromVideo(file);
-            //String uploadedMutedFileName = fileUploadService.uploadFile2(mutedVideoFile, savedName, "upload-mute");
-            // 소리 파일을 업로드
-            //File soundFile = fileUploadService.extractAudioFromVideo(file);
-            //String uploadedSoundFileName = fileUploadService.uploadFile2(soundFile, savedName, "upload-sound");
-            //return vo2;
-            //model.addAttribute("result", vo2);
         }
         else{
             System.out.println("인증 실패");
             return ResponseEntity.badRequest().build();
         }
-
-
     }
 
     @PutMapping("/update/delete_state/{video_id}")

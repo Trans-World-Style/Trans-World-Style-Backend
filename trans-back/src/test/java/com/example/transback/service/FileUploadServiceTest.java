@@ -1,6 +1,5 @@
 package com.example.transback.service;
 
-
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
@@ -14,21 +13,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Date;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class FileUploadServiceTest {
-
     @Mock
     private AmazonS3 amazonS3;
 
@@ -61,37 +54,5 @@ class FileUploadServiceTest {
         // 결과 확인
         assertEquals(savedName, result);
     }
-
-//    @Test
-//    void generateSignedURL() throws MalformedURLException {
-//        // 가짜 URL 생성
-//        String key = "sea.mp4";
-//        long expirationTimeInMilliseconds = 10000;
-//
-//        // AmazonS3 클래스의 generatePresignedUrl() 메소드에 대한 Mock 설정
-//        when(amazonS3.generatePresignedUrl(any())).thenReturn(new URL("https://example.com/signed-url"));
-//
-//        // generateSignedURL2() 메소드 호출
-//        String signedURL = fileUploadService.generateSignedURL(key, "upload",expirationTimeInMilliseconds);
-//
-//        // 반환된 signedURL이 예상한 URL인지 확인
-//        assertEquals("https://example.com/signed-url", signedURL);
-//    }
-//
-//    @Test
-//    void generateSignedURL2() throws MalformedURLException{
-//        // 가짜 URL 생성
-//        String key = "upload/sea.mp4";
-//        long expirationTimeInMilliseconds = 10000;
-//
-//        // AmazonS3 클래스의 generatePresignedUrl() 메소드에 대한 Mock 설정
-//        when(amazonS3.generatePresignedUrl(any())).thenReturn(new URL("https://example.com/signed-url"));
-//
-//        // generateSignedURL2() 메소드 호출
-//        String signedURL = fileUploadService.generateSignedURL2(key, expirationTimeInMilliseconds);
-//
-//        // 반환된 signedURL이 예상한 URL인지 확인
-//        assertEquals("https://example.com/signed-url", signedURL);
-//    }
 
 }

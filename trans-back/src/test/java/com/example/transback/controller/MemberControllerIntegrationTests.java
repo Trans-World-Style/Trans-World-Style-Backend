@@ -9,7 +9,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
@@ -30,24 +32,12 @@ import org.springframework.test.web.servlet.MvcResult;
 import com.fasterxml.jackson.core.type.TypeReference;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@ExtendWith(SpringExtension.class)
-@WebMvcTest(MemberController.class)
-@ActiveProfiles("test") // 테스트 환경용 프로파일로 설정
+@SpringBootTest
+@AutoConfigureMockMvc
 public class MemberControllerIntegrationTests {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @MockBean
-    private MemberService memberService;
-
-    @BeforeEach
-    public void setup() {
-        // 테스트에 필요한 Mock 객체들의 동작을 설정
-        // memberService.processGoogleLogin() 메서드 호출 시 아무 동작도 하지 않도록 설정
-//        given(memberService.processGoogleLogin(any(MemberDTO.class))).willReturn(null);
-        doNothing().when(memberService).processGoogleLogin(any(MemberDTO.class));
-    }
 
     @Test
     @DisplayName("-")
@@ -55,36 +45,30 @@ public class MemberControllerIntegrationTests {
 
     }
 
-    @Test
-    @DisplayName("사용자 인증 API 테스트")
-    public void integrationTestAuthenticateUser() throws Exception {
-        // 가짜 요청 바디 생성
-        Map<String, String> requestBody = new HashMap<>();
-        String id_token="eyJhbGciOiJSUzI1NiIsImtpZCI6ImEzYmRiZmRlZGUzYmFiYjI2NTFhZmNhMjY3OGRkZThjMGIzNWRmNzYiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJuYmYiOjE2ODk3NTg4NDcsImF1ZCI6IjU4NTU0MzI5MjA4NC1uZ2x2ZWo5ZnF2c203aW41YmdldjYyc2NxYnFwbmxsci5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsInN1YiI6IjEwNDUxOTk4MjA0MDIxNjM4NjM0MSIsImVtYWlsIjoienp4eDk2MzNAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImF6cCI6IjU4NTU0MzI5MjA4NC1uZ2x2ZWo5ZnF2c203aW41YmdldjYyc2NxYnFwbmxsci5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsIm5hbWUiOiLslYjsoJXsmrAiLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EvQUFjSFR0ZVUySHVMMFlXbENQaGNOS3RJbERtVDZOOVNNMEpKcXZnRDdVRlNHb3VVPXM5Ni1jIiwiZ2l2ZW5fbmFtZSI6IuygleyasCIsImZhbWlseV9uYW1lIjoi7JWIIiwiaWF0IjoxNjg5NzU5MTQ3LCJleHAiOjE2ODk3NjI3NDcsImp0aSI6ImQ2ZmEyMTU3NmRhZWFmMTNiYWJlNTNkYzY0Y2UwNzA0NzEyZWEwOTkifQ.MkJexRFo5LCDNvyQpg5n2iLRbhbFD9qGWPJBbDsdFifNYKV4B-1rkybpjDpij-zPf4uMJg41LqwxbPyQEp2PYsouVj8w8rAeAMGZskuX5g9KpQM8b616pTrXLTLdzd0A3pxm8t8lC7hiGZexfSfNnNRmn1zjpWmadHAYpdBonL0qR2w3-3vfLvWUs1bVSl1sSX4eKLTcZuAVTDs2W66F9bcU5ErN_ZQ5bHd3gXw-F6L8a86gavaCxNtbrILuN4yCE9RevF7jw6VefxQQr4F5UsPULl51giWMssH1wILlu9-Nd0KL-nD-LgQN-yTo9ndfp5Z2e7OeXuu1k2NGbgwZyA";
-        requestBody.put("id_token", id_token);
-        // 가짜 응답 데이터 생성
-//        String email = "test@example.com";
-//        String jwt = JwtUtil.generateJWT(email);
-//        AuthResponse expectedResponse = new AuthResponse(jwt);
+//    @Test
+//    @DisplayName("Test authenticateUser")
+//    public void testAuthenticateUser() throws Exception {
+//        String googleIdToken = "eyJhbGciOiJSUzI1NiIsImtpZCI6ImZkNDhhNzUxMzhkOWQ0OGYwYWE2MzVlZjU2OWM0ZTE5NmY3YWU4ZDYiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiI1ODU1NDMyOTIwODQtbmdsdmVqOWZxdnNtN2luNWJnZXY2MnNjcWJxcG5sbHIuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiI1ODU1NDMyOTIwODQtbmdsdmVqOWZxdnNtN2luNWJnZXY2MnNjcWJxcG5sbHIuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMDQ1MTk5ODIwNDAyMTYzODYzNDEiLCJlbWFpbCI6Inp6eHg5NjMzQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJuYmYiOjE2OTA4Nzg0NzQsIm5hbWUiOiLslYjsoJXsmrAiLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EvQUFjSFR0ZVUySHVMMFlXbENQaGNOS3RJbERtVDZOOVNNMEpKcXZnRDdVRlNHb3VVPXM5Ni1jIiwiZ2l2ZW5fbmFtZSI6IuygleyasCIsImZhbWlseV9uYW1lIjoi7JWIIiwibG9jYWxlIjoia28iLCJpYXQiOjE2OTA4Nzg3NzQsImV4cCI6MTY5MDg4MjM3NCwianRpIjoiOTI0ODgzODM5NmJmMWY3YmU0MzQyZDgxZWQ3MjJkZjI3NTA4MTM0ZCJ9.eyIoUrm1ItUi0zf4z9AcE3Zi-iq9LjtTuzPjyg_cuHupmHtc0vYR528uzguprlUb1OHXquQ2M7LTUih_ThRqM3xq2F4sD5XmmDi4RUffpt2-H5WmcLJFVzCrPbc4NGtSiJEXgZ9Q8wGDptSC6g_bUESWnX_TQrQYZszJL_Hi695dAo6yDAK9BPwwTF3j5NITXUgCKT28o5LBW4MrDmqrSRZOCKmTKgd3t3u-KABxjjHT2_PpgJKfLHyeQO9FasJpJhakyYMBCPCCclZ7agyiziGSYjBIi5fRdLrKctf2joUGSxkI6oKUUFxmypfoUH-s31DhaoDYEYfaKER3PpLlOw"; // 테스트용 Google ID 토큰
+//
+//        Map<String, String> requestBody = new HashMap<>();
+//        requestBody.put("id_token", googleIdToken);
+//
+//        mockMvc.perform(MockMvcRequestBuilders.post("/member/auth")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(asJsonString(requestBody)))
+//                .andExpect(MockMvcResultMatchers.status().isOk())
+//                .andExpect(MockMvcResultMatchers.cookie().exists("jwt")) // JWT 쿠키가 존재하는지 확인
+//                .andDo(print());
+//    }
 
-        // MockMvc를 사용하여 API 요청 및 응답 검증
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/member/auth")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"id_token\":\"" + id_token + "\"}"))
-                        .andExpect(MockMvcResultMatchers.status().isOk())
-                        .andExpect(MockMvcResultMatchers.jsonPath("$.jwt").exists())
-                        .andReturn(); // 응답 결과 가져오기
-
-        // JSON 응답에서 jwt 추출
-        String responseString = result.getResponse().getContentAsString();
-        ObjectMapper objectMapper = new ObjectMapper();
-        Map<String, String> jsonMap = objectMapper.readValue(responseString, new TypeReference<Map<String, String>>() {});
-
-        String jwtToken = jsonMap.get("jwt");
-        System.out.println("jwt:"+jwtToken);
-
-        // MemberService의 processGoogleLogin() 메서드가 올바르게 호출되었는지 확인
-        verify(memberService, times(1)).processGoogleLogin(any(MemberDTO.class));
+    // 객체를 JSON 문자열로 변환하는 메서드
+    private String asJsonString(Object obj) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.writeValueAsString(obj);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

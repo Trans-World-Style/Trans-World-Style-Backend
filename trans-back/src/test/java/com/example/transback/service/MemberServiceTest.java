@@ -2,17 +2,13 @@ package com.example.transback.service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import com.example.transback.dao.MemberDAOInterface;
 import com.example.transback.dto.MemberDTO;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-
 import java.util.Optional;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -26,6 +22,7 @@ class MemberServiceTest {
     private MemberDAOInterface memberDAOInterface;
 
     @Test
+    @DisplayName("Login")
     void processGoogleLogin() {
         // 가짜 MemberDTO 객체 생성
         MemberDTO memberDTO = new MemberDTO();
@@ -40,7 +37,7 @@ class MemberServiceTest {
     }
 
     @Test
-    @DisplayName("processGoogleLogin() 메소드 - 이미 존재하는 회원인 경우")
+    @DisplayName("Login - existing member")
     public void testProcessGoogleLoginExistingMember() {
         // 가짜 MemberDTO 객체 생성
         MemberDTO memberDTO = new MemberDTO();
