@@ -18,7 +18,7 @@ public class CorsConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.addAllowedOrigin(allowedOrigin);
-        config.addAllowedOrigin("https://tw-style.duckdns.org:12510");
+        config.addAllowedOrigin("https://tw-style.duckdns.org:11910");
         config.addAllowedMethod("GET");
         config.addAllowedMethod("POST");
         config.addAllowedMethod("PUT");
