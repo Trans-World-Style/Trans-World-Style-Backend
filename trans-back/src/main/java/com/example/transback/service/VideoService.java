@@ -5,6 +5,8 @@ import com.example.transback.dao.VideoDAOInterface;
 import com.example.transback.dto.VideoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -31,6 +33,7 @@ public class VideoService {
         return vo2;
     }
 
+    @Transactional(readOnly = true)
     public List<VideoDTO> findVideosByEmailAndDeleteZero(String email) {
         List<VideoDTO> list = videoRepository.findVideosByEmailAndDeleteZero(email);
         System.out.println("service result>> " + list);

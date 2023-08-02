@@ -11,7 +11,6 @@ import java.util.List;
 @Repository
 public interface VideoDAOInterface extends JpaRepository<VideoDTO, Integer> {
 
-    @Transactional(readOnly = true)
     @Query("SELECT v FROM video v WHERE v.delete_state = 0 AND v.email = :email")
     List<VideoDTO> findVideosByEmailAndDeleteZero(@Param("email") String email);
 
