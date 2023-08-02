@@ -25,7 +25,6 @@ import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/member")
-@CrossOrigin(origins = "${cors.origin}")
 public class MemberController {
 
     @Autowired
