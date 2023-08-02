@@ -20,7 +20,6 @@ import org.springframework.web.client.RestTemplate;
 
 @RestController
 @RequestMapping("/video")
-@CrossOrigin(origins = "${cors.origin}")
 public class VideoController {
 
     @Autowired
