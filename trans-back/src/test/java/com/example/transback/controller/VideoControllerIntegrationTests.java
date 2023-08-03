@@ -12,6 +12,8 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -30,6 +32,7 @@ public class VideoControllerIntegrationTests {
     @Test
     @DisplayName("Video list (private)")
     public void testFindVideosByEmailAndDeleteZero() throws Exception {
+
         // 테스트 이메일
         String email = "zzxx9633@gmail.com";
         String jwtToken = JwtUtil.generateJWT(email);
