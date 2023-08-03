@@ -40,12 +40,12 @@ public class TestLifeCycle {
         System.out.println();
     }
 
-    @Test
-    @DisplayName("Test Case 2!!!")
-    void test2() {
-        System.out.println("## test2 시작 ##");
-        System.out.println();
-    }
+//    @Test
+//    @DisplayName("Test Case 2!!!")
+//    void test2() {
+//        System.out.println("## test2 시작 ##");
+//        System.out.println();
+//    }
 
     @Test
     @Disabled
