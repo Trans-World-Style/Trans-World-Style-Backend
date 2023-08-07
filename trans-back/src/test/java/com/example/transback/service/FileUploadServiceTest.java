@@ -41,7 +41,7 @@ class FileUploadServiceTest {
         // 가짜 파일 생성
         String folderName = "test-folder";
         String savedName = "test-file.mp4";
-        String filePath = "src/main/resources/static/upload/sea.mp4";
+        String filePath = "src/main/resources/static/upload/cut(360p).mp4";
         File file = new File(filePath);
         MultipartFile multipartFile = new MockMultipartFile(savedName, new FileInputStream(file));
 
