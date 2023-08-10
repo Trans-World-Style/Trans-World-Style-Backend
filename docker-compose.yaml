@@ -10,7 +10,7 @@ services:
         - ENV=${ENV}
     container_name: spring-${ENV}
     ports:
-      - "${PORT}:9090"
+      - "${PORT}:8888"
 #    stdin_open: true
 #    command: bash
 #    tty: true
