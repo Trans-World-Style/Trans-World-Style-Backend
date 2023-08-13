@@ -67,6 +67,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.cloud:spring-cloud-starter-config'
 
+	//scg
+//	implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
+
 }
 
 dependencyManagement {
