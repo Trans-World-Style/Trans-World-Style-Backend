@@ -5,21 +5,21 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+//import org.springframework.web.servlet.config.annotation.CorsRegistry;
+//import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
+//import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;@Configuration
+////public class WebConfig implements WebMvcConfigurer {
+////
+////    @Bean
+////    public CommonsMultipartResolver multipartResolver() {
+////        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
+////        resolver.setDefaultEncoding("UTF-8");
+////        resolver.setMaxUploadSizePerFile(50 * 1024 * 1024);
+////        return resolver;
+////    }
+////
+////
+////}
 
 
-@Configuration
-public class WebConfig implements WebMvcConfigurer {
-
-    @Bean
-    public CommonsMultipartResolver multipartResolver() {
-        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
-        resolver.setDefaultEncoding("UTF-8");
-        resolver.setMaxUploadSizePerFile(50 * 1024 * 1024);
-        return resolver;
-    }
-
-
-}
+//
