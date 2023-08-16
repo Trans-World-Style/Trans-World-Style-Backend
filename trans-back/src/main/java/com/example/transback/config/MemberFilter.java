@@ -1,4 +1,4 @@
-package com.example.transback.config.filter;
+package com.example.transback.config;
 
 import lombok.Data;
 import org.apache.logging.log4j.LogManager;
