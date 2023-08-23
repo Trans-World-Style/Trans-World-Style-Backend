@@ -1,5 +1,6 @@
 package com.example.transback.controller;
 
+import com.example.transback.dto.MailDTO;
 import com.example.transback.dto.VideoDTO;
 import com.example.transback.service.FileUploadService;
 import com.example.transback.service.VideoService;
