@@ -1,6 +1,5 @@
 package com.example.transback.controller;
 
-import com.example.transback.dto.MailDTO;
 import com.example.transback.dto.VideoDTO;
 import com.example.transback.service.FileUploadService;
 import com.example.transback.service.VideoService;
@@ -8,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
@@ -35,7 +33,7 @@ public class VideoController {
     @Value("${aiApi}")
     private String aiApi;
 
-    @Value("${backend.url}")
+    @Value("${email.url}")
     private String backendUrl;
 
     @Autowired
