@@ -1,5 +1,6 @@
 package com.example.transback.controller;
 
+import com.example.transback.dto.MailDTO;
 import com.example.transback.dto.VideoDTO;
 import com.example.transback.service.FileUploadService;
 import com.example.transback.service.VideoService;
@@ -33,6 +34,9 @@ public class VideoController {
 
     @Value("${aiApi}")
     private String aiApi;
+
+    @Value("${backend.url}")
+    private String backendUrl;
 
     @Autowired
     public VideoController(RestTemplate restTemplate, FileUploadService fileUploadService) {
@@ -135,7 +139,19 @@ public class VideoController {
                 String signedURL2 = fileUploadService.generateSignedURL2(result, expirationTimeInMilliseconds);
                 vo.setOutput_url(signedURL2);
                 videoService.save(vo);
+
+                MailDTO mailDto = new MailDTO();
+                mailDto.setAddress(email);  // 이메일 주소 설정
+                mailDto.setTitle("Video Uploaded");
+                mailDto.setContent("Your video has been successfully uploaded!");
+                System.out.println("비디오 컨트롤러:"+mailDto);
+                String emailUrl = backendUrl + "/email/send";
+
+                // 이메일 전송 요청
+                ResponseEntity<String> response = restTemplate.postForEntity(emailUrl, mailDto, String.class);
+
                 return ResponseEntity.ok(signedURL2);
+
             } else {
                 // AI 서버 요청 실패 처리
                 return ResponseEntity.badRequest().build();
