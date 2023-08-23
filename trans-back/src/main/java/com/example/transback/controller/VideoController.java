@@ -35,7 +35,7 @@ public class VideoController {
     @Value("${aiApi}")
     private String aiApi;
 
-    @Value("${backend.url}")
+    @Value("${email.url}")
     private String backendUrl;
 
     @Autowired
