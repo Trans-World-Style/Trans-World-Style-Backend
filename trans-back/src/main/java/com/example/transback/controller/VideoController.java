@@ -144,7 +144,7 @@ public class VideoController {
                 String emailUrl = backendUrl + "/email/send";
 
                 // 이메일 전송 요청
-//                ResponseEntity<String> response = restTemplate.postForEntity(emailUrl, mailDto, String.class);
+                ResponseEntity<String> response = restTemplate.postForEntity(emailUrl, mailDto, String.class);
 
                 return ResponseEntity.ok(signedURL2);
 
