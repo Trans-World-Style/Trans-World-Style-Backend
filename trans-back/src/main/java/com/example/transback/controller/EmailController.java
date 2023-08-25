@@ -2,9 +2,7 @@ package com.example.transback.controller;
 
 import com.example.transback.dto.MailDTO;
 import com.example.transback.service.EmailService;
-import com.example.transback.service.VideoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
