@@ -66,13 +66,13 @@ public class VideoController {
         // JWT 토큰에서 이메일 추출
         String jwt = request.getHeader("Authorization");
         jwt = jwt.replace("Bearer ", ""); // "Bearer " 접두사 제거
-        System.out.println(jwt);
+        //System.out.println(jwt);
 
         if(validateJWT(jwt)) {
             String email = extractEmailFromJWT(jwt); // JWT 토큰에서 이메일 추출하는 함수 호출
             System.out.println(email);
             List<VideoDTO> list = videoService.findVideosByEmailAndDeleteZero(email);
-            System.out.println("controller result>> " + list);
+            //System.out.println("controller result>> " + list);
             return ResponseEntity.ok(list);
         }
         else{
@@ -119,22 +119,19 @@ public class VideoController {
             // 서명된 URL 생성
             long expirationTimeInMilliseconds = 604800000;
             String signedURL = fileUploadService.generateSignedURL(savedName,"upload", expirationTimeInMilliseconds);
-            System.out.println("upload_url: "+signedURL);
+            //System.out.println("upload_url: "+signedURL);
             vo.setUpload_url(signedURL);
-            System.out.println(vo);
+            //System.out.println(vo);
 
             // AI 서버의 API에 요청
             String aiServerUrl = aiApi + savedName;
-            //String aiServerUrl = "http://endnjs.iptime.org:12530/upscale_video?key=upload/" + savedName;
-            System.out.println("1: "+aiServerUrl);
             ResponseEntity<AIResponse> aiResponse = restTemplate.postForEntity(aiServerUrl, null, AIResponse.class);
-            System.out.println("2: "+aiServerUrl);
             // AI 서버의 응답 데이터 처리
             if (aiResponse != null && aiResponse.getStatusCode().is2xxSuccessful()) {
                 AIResponse responseBody = aiResponse.getBody();
                 String result = responseBody.getResult();
-                System.out.println("AI Server Response: " + result);
-                long expirationTimeInMilliseconds2 = 3600000;
+//                System.out.println("AI Server Response: " + result);
+//                long expirationTimeInMilliseconds2 = 3600000;
                 String signedURL2 = fileUploadService.generateSignedURL2(result, expirationTimeInMilliseconds);
                 vo.setOutput_url(signedURL2);
                 videoService.save(vo);
@@ -147,7 +144,7 @@ public class VideoController {
                 String emailUrl = backendUrl + "/email/send";
 
                 // 이메일 전송 요청
-                ResponseEntity<String> response = restTemplate.postForEntity(emailUrl, mailDto, String.class);
+//                ResponseEntity<String> response = restTemplate.postForEntity(emailUrl, mailDto, String.class);
 
                 return ResponseEntity.ok(signedURL2);
 

@@ -1,7 +1,6 @@
 package com.example.transback.dto;
 
 import lombok.*;
-
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.time.LocalDateTime;
