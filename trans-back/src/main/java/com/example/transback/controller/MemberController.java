@@ -38,7 +38,7 @@ public class MemberController {
     @PostMapping("/auth")
     public ResponseEntity<?> authenticateUser(@RequestBody Map<String, String> requestBody,HttpServletResponse response) {
         String googleIdToken = requestBody.get("id_token");
-        System.out.println(googleIdToken);
+//        System.out.println(googleIdToken);
         // 구글 ID 토큰 유효성 검사 및 가져오기
         HttpTransport transport;
         JsonFactory jsonFactory;
