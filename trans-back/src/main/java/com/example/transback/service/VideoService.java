@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Method;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,6 +61,17 @@ public class VideoService {
             return updatedVideo;
         } else {
             throw new NotFoundException("Video not found with ID: " + video_id);
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public void updateDeleteStateForOldVideos() {
+        LocalDateTime sevenDaysAgo = LocalDateTime.now().minusDays(7);
+        List<VideoDTO> oldVideos = videoRepository.findVideosByUploadTimeBeforeAndDeleteStateIsZero(sevenDaysAgo);
+
+        for (VideoDTO video : oldVideos) {
+            video.setDelete_state(1);
+            videoRepository.save(video);
         }
     }
 

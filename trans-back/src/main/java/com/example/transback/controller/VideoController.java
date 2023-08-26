@@ -122,7 +122,7 @@ public class VideoController {
             //System.out.println("upload_url: "+signedURL);
             vo.setUpload_url(signedURL);
             //System.out.println(vo);
-            
+
             //ai 서버 생략 (테스트할때만)
             return ResponseEntity.ok(signedURL);
 
