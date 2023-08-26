@@ -64,7 +64,7 @@ public class VideoService {
         }
     }
 
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = false)
     public void updateDeleteStateForOldVideos() {
         LocalDateTime sevenDaysAgo = LocalDateTime.now().minusDays(7);
         List<VideoDTO> oldVideos = videoRepository.findVideosByUploadTimeBeforeAndDeleteStateIsZero(sevenDaysAgo);

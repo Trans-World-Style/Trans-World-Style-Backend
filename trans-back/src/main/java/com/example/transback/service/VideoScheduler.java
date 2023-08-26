@@ -5,6 +5,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import com.example.transback.service.VideoService;
 
+import java.time.LocalDateTime;
+
 @Service
 public class VideoScheduler {
 
@@ -15,8 +17,9 @@ public class VideoScheduler {
         this.videoService = videoService;
     }
 
-    @Scheduled(cron = "0 30 13 * * ?") // 실행 시간
+    @Scheduled(cron = "0 0 9 * * ?") // 실행 시간
     public void scheduleVideoDeletion() {
+        System.out.println("Scheduled task executed at " + LocalDateTime.now());
         videoService.updateDeleteStateForOldVideos();
     }
 }
