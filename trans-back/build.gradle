@@ -11,71 +11,15 @@ java {
 	sourceCompatibility = '1.8'
 }
 
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
-}
-
 repositories {
 	mavenCentral()
 }
 
-ext {
-	set('springCloudVersion', "2021.0.8")
-}
-
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-web-services'
-	compileOnly 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	runtimeOnly 'com.mysql:mysql-connector-j'
-	annotationProcessor 'org.projectlombok:lombok'
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
-	//jsp 사용
-	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
-	implementation 'javax.servlet:jstl'
-
-	//파일 업로드
-	implementation 'commons-fileupload:commons-fileupload:1.4'
-	implementation 'commons-io:commons-io:2.11.0'
-
-	//s3 버킷
-	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
-	implementation 'software.amazon.awssdk:s3:2.17.20'
-	implementation 'software.amazon.awssdk:core:2.17.20'
-
-	//jwt
-	implementation 'io.jsonwebtoken:jjwt:0.9.1'
-	implementation 'com.google.auth:google-auth-library-oauth2-http:0.26.0'
-	implementation 'com.google.api-client:google-api-client-jackson2:1.32.1'
-	implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.5'
-	implementation 'com.fasterxml.jackson.core:jackson-core:2.12.5'
-	implementation 'com.fasterxml.jackson.core:jackson-annotations:2.12.5'
-	implementation 'com.google.api-client:google-api-client:1.31.1'
-
-	//testImplementation 'org.springframework:spring-test:5.3.18'
-	testImplementation 'org.mockito:mockito-core:3.12.4'
-	testImplementation 'com.h2database:h2'
-
-	//config client
-	implementation 'org.springframework.boot:spring-boot-starter-actuator'
-	implementation 'org.springframework.cloud:spring-cloud-starter-config'
-
-	//scg
-//	implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
-
-}
-
-dependencyManagement {
-	imports {
-		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-	}
 }
 
 tasks.named('test') {
