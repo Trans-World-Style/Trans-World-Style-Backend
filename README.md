@@ -14,11 +14,15 @@
 *******
 
 **1. Member API**
+* provide **google login**
+* request:google id token
 ```
 https://tw-style.duckdns.org:12522/member/auth
 ```
 
 **2. Video API**
+* provide **file upload** to bucket(s3) and send to **AI Server**
+* request header: Authorization : {jwt}
 ```
 https://tw-style.duckdns.org:12523/video/list/email
 ```
