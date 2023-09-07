@@ -123,37 +123,6 @@ public class VideoController {
             vo.setUpload_url(signedURL);
             //System.out.println(vo);
 
-<<<<<<< HEAD
-            // AI 서버의 API에 요청
-            String aiServerUrl = aiApi + savedName;
-            ResponseEntity<AIResponse> aiResponse = restTemplate.postForEntity(aiServerUrl, null, AIResponse.class);
-            // AI 서버의 응답 데이터 처리
-            if (aiResponse != null && aiResponse.getStatusCode().is2xxSuccessful()) {
-                AIResponse responseBody = aiResponse.getBody();
-                String result = responseBody.getResult();
-//                System.out.println("AI Server Response: " + result);
-//                long expirationTimeInMilliseconds2 = 3600000;
-                String signedURL2 = fileUploadService.generateSignedURL2(result, expirationTimeInMilliseconds);
-                vo.setOutput_url(signedURL2);
-                videoService.save(vo);
-
-                MailDTO mailDto = new MailDTO();
-                mailDto.setAddress(email);  // 이메일 주소 설정
-                mailDto.setTitle("Video Uploaded");
-                mailDto.setContent("Your video has been successfully uploaded!");
-                System.out.println("비디오 컨트롤러:"+mailDto);
-                String emailUrl = backendUrl + "/email/send";
-
-                // 이메일 전송 요청
-                ResponseEntity<String> response = restTemplate.postForEntity(emailUrl, mailDto, String.class);
-
-                return ResponseEntity.ok(signedURL2);
-
-            } else {
-                // AI 서버 요청 실패 처리
-                return ResponseEntity.badRequest().build();
-            }
-=======
             //ai 서버 생략 (테스트할때만)
             return ResponseEntity.ok(signedURL);
 
@@ -186,7 +155,6 @@ public class VideoController {
 //                // AI 서버 요청 실패 처리
 //                return ResponseEntity.badRequest().build();
 //            }
->>>>>>> video-test
         }
         else{
             System.out.println("인증 실패");
