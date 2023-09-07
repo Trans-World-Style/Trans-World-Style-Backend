@@ -14,23 +14,27 @@
 *******
 
 **1. Member API**
-* provide **google login** [request - google id token]
+* provide **google login**
 ```
 https://tw-style.duckdns.org:12522/member/auth
 ```
 
+request - google id token
+
 **2. Video API**
 * provide **video list**
-* [request header - Authorization : {jwt}]
 ```
 https://tw-style.duckdns.org:12523/video/list/email
 ```
+
+request header - Authorization : {jwt}
 
 * **file upload** to bucket(s3) and send to **AI Server**
 ```
 https://tw-style.duckdns.org:12523/video/upload
 ```
-* request header - Authorization : {jwt}
+
+request header - Authorization : {jwt}
 
 * **delete** video
 ```
@@ -40,9 +44,12 @@ https://tw-style.duckdns.org:12523/video/update/delete_state/{video_id}
 **Spring Cloud Gateway**
 *******
 **1. Member Filter**
-* make jwt
+
+make jwt
+
 **2. Video Filter**
-* validate jwt
+
+validate jwt
 
 
 
