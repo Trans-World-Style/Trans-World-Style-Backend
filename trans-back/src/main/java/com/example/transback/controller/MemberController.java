@@ -35,6 +35,14 @@ public class MemberController {
     @Value("${google.client-id}")
     private String CLIENT_ID;
 
+    @Value("${cors.origin}")
+    private String a;
+
+    @GetMapping("/hello2")
+    public String hello2(){
+        return a;
+    }
+
     @PostMapping("/auth")
     public ResponseEntity<?> authenticateUser(@RequestBody Map<String, String> requestBody,HttpServletResponse response) {
         String googleIdToken = requestBody.get("id_token");
