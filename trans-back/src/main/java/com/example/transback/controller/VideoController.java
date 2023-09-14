@@ -121,13 +121,14 @@ public class VideoController {
             String signedURL = fileUploadService.generateSignedURL(savedName,"upload", expirationTimeInMilliseconds);
             //System.out.println("upload_url: "+signedURL);
             vo.setUpload_url(signedURL);
-            //System.out.println(vo);
+            System.out.println(vo);
 
             //ai 서버 생략 (테스트할때만)
 //            return ResponseEntity.ok(signedURL);
 
             // AI 서버의 API에 요청
             String aiServerUrl = aiApi + savedName;
+            System.out.println(aiServerUrl);
             ResponseEntity<AIResponse> aiResponse = restTemplate.postForEntity(aiServerUrl, null, AIResponse.class);
             // AI 서버의 응답 데이터 처리
             if (aiResponse != null && aiResponse.getStatusCode().is2xxSuccessful()) {
