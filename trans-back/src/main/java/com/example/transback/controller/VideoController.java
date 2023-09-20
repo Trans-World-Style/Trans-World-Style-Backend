@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +24,7 @@ import org.springframework.web.client.RestTemplate;
 
 @RestController
 @RefreshScope
+@EnableAsync
 @RequestMapping("/video")
 public class VideoController {
 
@@ -63,7 +65,6 @@ public class VideoController {
     }
 
     @PostMapping("/list/email")
-    @Async
     public ResponseEntity<List<VideoDTO>> findVideosByEmailAndDeleteZero(HttpServletRequest request) {
         // JWT 토큰에서 이메일 추출
         String jwt = request.getHeader("Authorization");
@@ -89,6 +90,7 @@ public class VideoController {
     //    return one;
     //}
 
+//    @Async
     @PostMapping ("/upload")
     public ResponseEntity<String> save(HttpServletRequest request, MultipartFile file) throws Exception{
         System.out.println("(Controller) insert 요청");
