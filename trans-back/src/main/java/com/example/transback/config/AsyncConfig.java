@@ -10,8 +10,8 @@ public class AsyncConfig {
     @Bean
     public ThreadPoolTaskExecutor asyncExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(3); // 최소 스레드 수
-        executor.setMaxPoolSize(3); // 최대 스레드 수
+        executor.setCorePoolSize(2); // 최소 스레드 수
+        executor.setMaxPoolSize(2); // 최대 스레드 수
         executor.setQueueCapacity(Integer.MAX_VALUE); // 큐 용량
         executor.setThreadNamePrefix("Async-");
         executor.initialize();

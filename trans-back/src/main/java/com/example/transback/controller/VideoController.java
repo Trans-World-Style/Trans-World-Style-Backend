@@ -5,22 +5,27 @@ import com.example.transback.dto.VideoDTO;
 import com.example.transback.service.FileUploadService;
 import com.example.transback.service.VideoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.Semaphore;
+
 import static com.example.transback.util.JwtUtil.extractEmailFromJWT;
 import static com.example.transback.util.JwtUtil.validateJWT;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 @RestController
 @RefreshScope
@@ -90,6 +95,11 @@ public class VideoController {
     //    return one;
     //}
 
+
+    // "customAsyncExecutor" 빈을 주입받도록 @Qualifier 어노테이션을 사용합니다.
+//    @Autowired
+//    private ThreadPoolTaskExecutor asyncExecutor; // ThreadPoolTaskExecutor 빈 주입
+
 //    @Async
     @PostMapping ("/upload")
     public ResponseEntity<String> save(HttpServletRequest request, MultipartFile file) throws Exception{
@@ -104,7 +114,7 @@ public class VideoController {
         // JWT 토큰에서 이메일 추출
         String jwt = request.getHeader("Authorization");
         jwt = jwt.replace("Bearer ", ""); // "Bearer " 접두사 제거
-        if(validateJWT(jwt)) {
+//        if(validateJWT(jwt)) {
             String email = extractEmailFromJWT(jwt); // JWT 토큰에서 이메일 추출하는 함수 호출
             System.out.println(email);
 
@@ -160,11 +170,12 @@ public class VideoController {
                 // AI 서버 요청 실패 처리
                 return ResponseEntity.badRequest().build();
             }
-        }
-        else{
-            System.out.println("인증 실패");
-            return ResponseEntity.badRequest().build();
-        }
+
+//        }
+//        else{
+//            System.out.println("인증 실패");
+//            return ResponseEntity.badRequest().build();
+//        }
     }
 
     @PutMapping("/update/delete_state/{video_id}")
