@@ -16,8 +16,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Semaphore;
 
 import static com.example.transback.util.JwtUtil.extractEmailFromJWT;
@@ -62,7 +65,8 @@ public class VideoController {
     }
 
     @GetMapping("/list")
-    public List<VideoDTO> findAll() {
+    public List<VideoDTO> findAll() throws InterruptedException {
+        Thread.sleep(10000); // 10초 대기
         List<VideoDTO> list = videoService.findAll();
         System.out.println("controller result>> " + list);
         //model.addAttribute("list", list);
@@ -95,13 +99,35 @@ public class VideoController {
     //    return one;
     //}
 
+    // 요청을 저장하기 위한 어레이 (최대 2개)
+    private List<MultipartFile> requestArray = new ArrayList<>();
 
-    // "customAsyncExecutor" 빈을 주입받도록 @Qualifier 어노테이션을 사용합니다.
-//    @Autowired
-//    private ThreadPoolTaskExecutor asyncExecutor; // ThreadPoolTaskExecutor 빈 주입
+    // 요청을 저장하기 위한 큐 (2개 초과 요청 저장)
+    private BlockingQueue<MultipartFile> requestQueue = new ArrayBlockingQueue<>(Integer.MAX_VALUE);
+
+
+    @PostMapping("/upload")
+    public ResponseEntity<String> save0(HttpServletRequest request, MultipartFile file) throws Exception {
+        // 어레이에 저장
+        requestArray.add(file);
+
+        // 어레이에 저장된 요청 개수가 2개 이하면 그대로 리턴
+        if (requestArray.size() <= 2) {
+            return ResponseEntity.ok("현재 어레이에 저장된 요청 개수: " + requestArray.size());
+        }
+
+        // 어레이에 2개가 쌓이면 큐에 옮기고 어레이 비우기
+        for (MultipartFile req : requestArray) {
+            requestQueue.put(req);
+        }
+        requestArray.clear();
+
+        // 큐에 대기 중인 요청 개수를 리턴
+        return ResponseEntity.ok("현재 큐에 대기 중인 요청 개수: " + requestQueue.size());
+    }
 
 //    @Async
-    @PostMapping ("/upload")
+    @PostMapping ("/upload2")
     public ResponseEntity<String> save(HttpServletRequest request, MultipartFile file) throws Exception{
         System.out.println("(Controller) insert 요청");
         String savedName0 = file.getOriginalFilename();

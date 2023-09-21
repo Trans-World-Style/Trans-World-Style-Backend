@@ -64,8 +64,8 @@ dependencies {
 	testImplementation 'com.h2database:h2'
 
 	//config client
-	implementation 'org.springframework.boot:spring-boot-starter-actuator'
-	implementation 'org.springframework.cloud:spring-cloud-starter-config'
+//	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+//	implementation 'org.springframework.cloud:spring-cloud-starter-config'
 
 	//smtp
 //	implementation 'org.springframework.boot:spring-boot-starter-mail'
