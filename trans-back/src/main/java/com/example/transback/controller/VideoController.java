@@ -15,6 +15,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -29,7 +30,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 @RestController
 @RefreshScope
-@EnableAsync
+//@EnableAsync
 @RequestMapping("/video")
 public class VideoController {
 
@@ -76,16 +77,16 @@ public class VideoController {
         jwt = jwt.replace("Bearer ", ""); // "Bearer " 접두사 제거
         //System.out.println(jwt);
 
-        if(validateJWT(jwt)) {
-            String email = extractEmailFromJWT(jwt); // JWT 토큰에서 이메일 추출하는 함수 호출
-            System.out.println(email);
-            List<VideoDTO> list = videoService.findVideosByEmailAndDeleteZero(email);
-            //System.out.println("controller result>> " + list);
-            return ResponseEntity.ok(list);
-        }
-        else{
-            return ResponseEntity.badRequest().build();
-        }
+//        if(validateJWT(jwt)) {
+        String email = extractEmailFromJWT(jwt); // JWT 토큰에서 이메일 추출하는 함수 호출
+        System.out.println(email);
+        List<VideoDTO> list = videoService.findVideosByEmailAndDeleteZero(email);
+        //System.out.println("controller result>> " + list);
+        return ResponseEntity.ok(list);
+//        }
+//        else{
+//            return ResponseEntity.badRequest().build();
+//        }
     }
 
     //@PostMapping("/detail")
@@ -96,11 +97,10 @@ public class VideoController {
     //}
 
 
-    // "customAsyncExecutor" 빈을 주입받도록 @Qualifier 어노테이션을 사용합니다.
 //    @Autowired
 //    private ThreadPoolTaskExecutor asyncExecutor; // ThreadPoolTaskExecutor 빈 주입
 
-//    @Async
+//    @Async("asyncExecutor")
     @PostMapping ("/upload")
     public ResponseEntity<String> save(HttpServletRequest request, MultipartFile file) throws Exception{
         System.out.println("(Controller) insert 요청");
@@ -120,6 +120,8 @@ public class VideoController {
 
             // 현재 시간 가져오기
             LocalDateTime currentTime = LocalDateTime.now();
+            
+            System.out.println("파일 업로드 직전");
 
             // 파일 업로드 서비스를 통해 파일 업로드
             String uploadedFileName = fileUploadService.uploadFile(file, savedName,"upload");

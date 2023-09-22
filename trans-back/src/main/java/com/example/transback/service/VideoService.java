@@ -8,6 +8,7 @@ import com.example.transback.dto.VideoDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,6 +45,7 @@ public class VideoService {
     }
 
     @Transactional(readOnly = true)
+    @Async("asyncExecutor")
     public List<VideoDTO> findVideosByEmailAndDeleteZero(String email) {
         List<VideoDTO> list = videoRepository.findVideosByEmailAndDeleteZero(email);
         System.out.println("service result>> " + list);
