@@ -1,5 +1,6 @@
 <component name="libraryTable">
-  <library name="Gradle: jakarta.jws:jakarta.jws-api:2.1.0">
+  <library name="Gradle: jakarta.jws:jakarta.jws-api:2.1.0" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="jakarta.jws" artifactId="jakarta.jws-api" version="2.1.0" />
     <CLASSES>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/jakarta.jws/jakarta.jws-api/2.1.0/7d283ef13e49c1422701e30639371edca788c609/jakarta.jws-api-2.1.0.jar!/" />
     </CLASSES>

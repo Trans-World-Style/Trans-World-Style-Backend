@@ -1,5 +1,6 @@
 <component name="libraryTable">
-  <library name="Gradle: org.springframework:spring-beans:5.3.28">
+  <library name="Gradle: org.springframework:spring-beans:5.3.28" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="org.springframework" artifactId="spring-beans" version="5.3.28" />
     <CLASSES>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-beans/5.3.28/4d232acbb7031963688cf28b1b34134937892c4f/spring-beans-5.3.28.jar!/" />
     </CLASSES>
