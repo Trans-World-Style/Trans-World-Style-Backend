@@ -151,6 +151,7 @@ public class VideoController {
         String jwt = request.getHeader("Authorization");
         String video_link=uploadOriginal(jwt,file);  //s3에 원본 upload
         long videoSize = file.getSize();
+
         
         if (count <2) {
             System.out.println("************************************************");
