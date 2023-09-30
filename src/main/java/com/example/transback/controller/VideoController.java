@@ -1,5 +1,6 @@
 package com.example.transback.controller;
 
+import com.example.transback.dto.FileInfo;
 import com.example.transback.dto.MailDTO;
 import com.example.transback.dto.QueueDTO;
 import com.example.transback.dto.VideoDTO;
@@ -72,7 +73,6 @@ public class VideoController {
 
     @GetMapping("/list")
     public List<VideoDTO> findAll() throws InterruptedException {
-        Thread.sleep(10000); // 10초 대기
         List<VideoDTO> list = videoService.findAll();
         System.out.println("controller result>> " + list);
         //model.addAttribute("list", list);
@@ -85,15 +85,37 @@ public class VideoController {
         String jwt = request.getHeader("Authorization");
         jwt = jwt.replace("Bearer ", ""); // "Bearer " 접두사 제거
         //System.out.println(jwt);
-        Thread.sleep(10000);
-
-
         String email = extractEmailFromJWT(jwt); // JWT 토큰에서 이메일 추출하는 함수 호출
         System.out.println(email);
         List<VideoDTO> list = videoService.findVideosByEmailAndDeleteZero(email);
         //System.out.println("controller result>> " + list);
         return ResponseEntity.ok(list);
+    }
 
+    @PostMapping("/list/email/wait")
+    public ResponseEntity<List<VideoDTO>> findVideosByEmailAndDeleteZero2(HttpServletRequest request) throws Exception{
+        // JWT 토큰에서 이메일 추출
+        String jwt = request.getHeader("Authorization");
+        jwt = jwt.replace("Bearer ", ""); // "Bearer " 접두사 제거
+        //System.out.println(jwt);
+        String email = extractEmailFromJWT(jwt); // JWT 토큰에서 이메일 추출하는 함수 호출
+        System.out.println(email);
+        List<VideoDTO> list = videoService.findVideosByEmailAndDeleteZeroWait(email);
+        System.out.print("wait list: "+list);
+        for(VideoDTO video:list){
+            int id=video.getVideo_id();
+            String video_link=video.getVideo_link();
+            int[] result=findVideoIndex(video_link);
+            int rank=result[0];
+            int time=result[1];
+            videoService.updateWaitingRank(id,rank,time);
+        }
+        System.out.print("wait list2: "+list);
+
+
+        List<VideoDTO> list2 = videoService.findVideosByEmailAndDeleteZeroWait(email);
+        //System.out.println("controller result>> " + list);
+        return ResponseEntity.ok(list2);
     }
 
 
@@ -103,26 +125,26 @@ public class VideoController {
     private QueueDTO queueDTO = new QueueDTO();
 
     @PostMapping("/upload")
-    public ResponseEntity<String> save0(HttpServletRequest request) throws Exception {
-        String emailUrl = "http://localhost:9092/video/list/email";
+    public ResponseEntity<String> save0(HttpServletRequest request,MultipartFile file) throws Exception {
 
         String jwt = request.getHeader("Authorization");
+        String video_link=uploadOriginal(jwt,file);  //s3에 원본 upload
+        long videoSize = file.getSize();
 
-        if (count < 1) {
+        if (count < 3) {
             System.out.println("************************************************");
-            count = count + 1;
-
-            HttpHeaders headers = new HttpHeaders();
-            headers.set("Authorization", jwt); // JWT 토큰을 헤더에 설정
-
-            HttpEntity<String> httpEntity = new HttpEntity<>(headers);
-            ResponseEntity<String> response = restTemplate.exchange(emailUrl, HttpMethod.POST, httpEntity, String.class);
-            System.out.println(response);
-            System.out.println("현재 큐에 대기 중인 요청 개수: " + queueDTO.size());
-            count = count - 1;
+            processThread(video_link);     //현재 thread 업스케일링 실행
+            processQueue();      //남은 큐 업스케일링 실행
+            
         } else {
             System.out.println("************************************************");
-            queueDTO.addJWT(jwt);
+            queueDTO.addFile(video_link,videoSize);
+            int[] array=findVideoIndex(video_link);
+            int index=array[0];
+            int waiting=array[1];
+            System.out.println("큐 대기 순위:"+index);
+            int video_id=videoService.findVideosByVideoLink(video_link);
+            videoService.updateWaitingRank(video_id,index,waiting);
 
             // 큐에 대기 중인 요청 개수 반환
             return ResponseEntity.ok("00현재 큐에 대기 중인 요청 개수: " + queueDTO.size());
@@ -131,43 +153,138 @@ public class VideoController {
         return ResponseEntity.ok("현재 큐에 대기 중인 요청 개수: " + queueDTO.size());
     }
 
-    @PostMapping("/upload2")
-    public ResponseEntity<String> save1(HttpServletRequest request) throws Exception {
-        String emailUrl = "http://localhost:9092/video/list/email";
 
-        processRequestQueue(emailUrl);
+    private String uploadOriginal(String jwt, MultipartFile file) throws Exception{
+        System.out.println("(Controller) insert 요청");
+        String savedName0 = file.getOriginalFilename();
+        String randomUUID = UUID.randomUUID().toString(); // 랜덤한 UUID 생성
+        String savedName = randomUUID + savedName0;
+        long videoSize = file.getSize();
 
-        return ResponseEntity.ok("현재 큐에 대기 중인 요청 개수: " + queueDTO.size());
+
+        System.out.println(savedName);
+        VideoDTO vo = new VideoDTO();
+
+        jwt = jwt.replace("Bearer ", ""); // "Bearer " 접두사 제거
+
+        String email = extractEmailFromJWT(jwt); // JWT 토큰에서 이메일 추출하는 함수 호출
+        System.out.println(email);
+
+        // 현재 시간 가져오기
+        LocalDateTime currentTime = LocalDateTime.now();
+
+        // 파일 업로드 서비스를 통해 파일 업로드
+        String uploadedFileName = fileUploadService.uploadFile(file, savedName,"upload");
+
+        vo.setVideo_link(savedName);
+        vo.setVideo_name(savedName0);
+        vo.setUpload_time(currentTime);
+        vo.setDelete_state(0);
+        vo.setEmail(email);
+        vo.setUpscale_state(0);
+        vo.setWaiting_rank(0);
+        vo.setWaiting_time(0);
+
+        // 서명된 URL 생성
+        long expirationTimeInMilliseconds = 604800000;
+        String signedURL = fileUploadService.generateSignedURL(savedName,"upload", expirationTimeInMilliseconds);
+        //System.out.println("upload_url: "+signedURL);
+        vo.setUpload_url(signedURL);
+        System.out.println(vo);
+        videoService.save(vo);
+
+        return savedName;
     }
 
-    private void processRequestQueue(String emailUrl) throws Exception {
+
+    private void processThread(String video_link) throws Exception {
+        count += 1;
+
+        // 전체 요청 정보 출력
+        System.out.println("큐에서 꺼낸 요청 정보:");
+        System.out.println("video_link: " + video_link);
+
+
+        ResponseEntity<String> response2=aiTransfer(video_link);
+//        System.out.println(response2);
+
+        System.out.println("현재 큐에 대기 중인 요청 개수: " + queueDTO.size());
+        count -= 1;
+    }
+
+    private void processQueue() throws Exception {
+
         while (!queueDTO.isEmpty()) {
             System.out.println("************************************************");
             System.out.println("큐 내용: " + queueDTO.toString());
 
             System.out.println(queueDTO.size());
-            String jwt = queueDTO.pollJWT();
+            FileInfo fileInfo = queueDTO.pollFile(); // 파일 정보를 가져옴
+
             System.out.println(queueDTO.size());
 
-            count += 1;
+            String filename = fileInfo.getFilename(); // 파일 이름
+            long videoSize = fileInfo.getFileSize(); // 파일 크기
+//            String filename,long video = queueDTO.pollFile();
+            System.out.println(queueDTO.size());
 
-            // 전체 요청 정보 출력
-            System.out.println("큐에서 꺼낸 요청 정보:");
-            System.out.println("JWT: " + jwt);
-
-            HttpHeaders headers2 = new HttpHeaders();
-            headers2.set("Authorization", jwt); // JWT 토큰을 헤더에 설정
-
-            HttpEntity<String> httpEntity2 = new HttpEntity<>(headers2);
-            ResponseEntity<String> response2 = restTemplate.exchange(emailUrl, HttpMethod.POST, httpEntity2, String.class);
-            System.out.println(response2);
-            System.out.println("현재 큐에 대기 중인 요청 개수: " + queueDTO.size());
-            count -= 1;
+            processThread(filename);
         }
     }
 
+    private ResponseEntity<String> aiTransfer(String video_link) throws Exception{
+
+        Thread.sleep(10000);
+
+        int video_id=videoService.findVideosByVideoLink(video_link);
+
+        //ai 변환 성공 후
+
+        VideoDTO updatedVideo =videoService.updateUpscaleState(video_id);
+        System.out.println(updatedVideo);
+
+        return ResponseEntity.ok(video_link);
+    }
+
+    private int[] findVideoIndex(String filename) {
+        int index = 0;
+        int total=0;
+        int[] result = new int[2];
+        for (FileInfo fileInfo : queueDTO.getFileInfoQueue()) {
+            System.out.println("큐순위 카운트: " + fileInfo.getFilename()); // fileInfo.getFilename()을 사용하여 파일 이름 얻음
+            System.out.println("큐순위 카운트: " + fileInfo.getFileSize()); // fileInfo.getFilename()을 사용하여 파일 이름 얻음
+            System.out.println("큐순위 카운트 file name: " + filename);
+            index++;
+            total+=(int)fileInfo.getFileSize()/10000;
+
+            if (fileInfo.getFilename().equals(filename)) { // fileInfo.getFilename()으로 파일 이름 비교
+
+                result[0] = index;
+                result[1] = (int) total;
+                return result;
+            }
+        }
+        result[0]=0;
+        result[1]=0;
+        return result;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     @PostMapping ("/upload0")
-    public ResponseEntity<String> save(HttpServletRequest request, MultipartFile file) throws Exception{
+    public ResponseEntity<String> upload0(HttpServletRequest request, MultipartFile file) throws Exception{
         System.out.println("(Controller) insert 요청");
         String savedName0 = file.getOriginalFilename();
         String randomUUID = UUID.randomUUID().toString(); // 랜덤한 UUID 생성
@@ -204,7 +321,7 @@ public class VideoController {
 
 
         //ai 서버 생략 (테스트할때만)
-        Thread.sleep(10000);
+        //Thread.sleep(10000);
         return ResponseEntity.ok(signedURL);
 
         // AI 서버의 API에 요청

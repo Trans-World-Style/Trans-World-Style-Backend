@@ -9,21 +9,27 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class QueueDTO {
-    private Queue<String> jwtQueue = new LinkedList<>(); // JWT를 저장하는 큐
+    private Queue<FileInfo> fileInfoQueue = new LinkedList<>();
 
-    public void addJWT(String jwt) {
-        jwtQueue.add(jwt);
+    public void addFile(String filename, long fileSize) {
+        FileInfo fileInfo = new FileInfo(filename, fileSize);
+        fileInfoQueue.add(fileInfo);
     }
 
-    public String pollJWT() {
-        return jwtQueue.poll();
+    public FileInfo pollFile() {
+        return fileInfoQueue.poll();
     }
 
     public boolean isEmpty() {
-        return jwtQueue.isEmpty();
+        return fileInfoQueue.isEmpty();
     }
 
     public int size() {
-        return jwtQueue.size();
+        return fileInfoQueue.size();
+    }
+    public Queue<FileInfo> getFileInfoQueue() {
+        return fileInfoQueue;
     }
 }
+
+

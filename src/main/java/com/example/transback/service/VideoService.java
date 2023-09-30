@@ -50,6 +50,52 @@ public class VideoService {
         return list;
     }
 
+    @Transactional(readOnly = true)
+    public List<VideoDTO> findVideosByEmailAndDeleteZeroWait(String email) {
+        List<VideoDTO> list = videoRepository.findVideosByEmailAndDeleteZeroWait(email);
+        System.out.println("service result>> " + list);
+        return list;
+    }
+
+    @Transactional(readOnly = true)
+    public int findVideosByVideoLink(String video_link) {
+        VideoDTO video = videoRepository.findVideosByVideoLink(video_link);
+        System.out.println("service result>> " + video);
+        return video.getVideo_id();
+    }
+
+    @Transactional(readOnly = false)
+    public VideoDTO updateUpscaleState(int video_id) {
+        Optional<VideoDTO> optionalVideo = videoRepository.findById(video_id);
+        System.out.println("service result>> " + optionalVideo);
+        if (optionalVideo.isPresent()) {
+            VideoDTO video = optionalVideo.get();
+            video.setUpscale_state(1);
+            video.setWaiting_time(0);
+            video.setWaiting_rank(0);
+            VideoDTO updatedVideo = videoRepository.save(video);
+            return updatedVideo;
+        } else {
+            throw new NotFoundException("Video not found with video_link: " + video_id);
+        }
+    }
+
+    @Transactional(readOnly = false)
+    public VideoDTO updateWaitingRank(int video_id,int rank,int waiting) {
+        Optional<VideoDTO> optionalVideo = videoRepository.findById(video_id);
+        System.out.println("service result>> " + optionalVideo);
+        if (optionalVideo.isPresent()) {
+            VideoDTO video = optionalVideo.get();
+
+            video.setWaiting_rank(rank);
+            video.setWaiting_time(waiting);
+            VideoDTO updatedVideo = videoRepository.save(video);
+            return updatedVideo;
+        } else {
+            throw new NotFoundException("Video not found with video_link: " + video_id);
+        }
+    }
+
     @Transactional(readOnly = false)
     public VideoDTO updateDeleteState(int video_id) {
         Optional<VideoDTO> optionalVideo = videoRepository.findById(video_id);
