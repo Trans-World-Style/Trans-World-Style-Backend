@@ -152,7 +152,7 @@ public class VideoController {
         String video_link=uploadOriginal(jwt,file);  //s3에 원본 upload
         long videoSize = file.getSize();
 
-        
+
         if (count <2) {
             System.out.println("************************************************");
             processThread(video_link);     //현재 thread 업스케일링 실행
