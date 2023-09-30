@@ -26,5 +26,8 @@ public class VideoDTO {
 	private LocalDateTime upload_time;
 	private Integer delete_state;
 	private LocalDateTime delete_time;
+	private Integer upscale_state;
+	private int waiting_rank;
+	private int waiting_time;
 
 }
