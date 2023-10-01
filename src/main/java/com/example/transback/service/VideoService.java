@@ -58,18 +58,19 @@ public class VideoService {
     }
 
     @Transactional(readOnly = true)
-    public int findVideosByVideoLink(String video_link) {
+    public VideoDTO findVideosByVideoLink(String video_link) {
         VideoDTO video = videoRepository.findVideosByVideoLink(video_link);
         System.out.println("service result>> " + video);
-        return video.getVideo_id();
+        return video;
     }
 
     @Transactional(readOnly = false)
-    public VideoDTO updateUpscaleState(int video_id) {
+    public VideoDTO updateUpscaleState(int video_id, String signedURL2) {
         Optional<VideoDTO> optionalVideo = videoRepository.findById(video_id);
         System.out.println("service result>> " + optionalVideo);
         if (optionalVideo.isPresent()) {
             VideoDTO video = optionalVideo.get();
+            video.setOutput_url(signedURL2);
             video.setUpscale_state(1);
             video.setWaiting_time(0);
             video.setWaiting_rank(0);

@@ -165,7 +165,8 @@ public class VideoController {
             int index=array[0];
             int waiting=array[1];
             System.out.println("큐 대기 순위:"+index);
-            int video_id=videoService.findVideosByVideoLink(video_link);
+            VideoDTO video=videoService.findVideosByVideoLink(video_link);
+            int video_id=video.getVideo_id();
             videoService.updateWaitingRank(video_id,index,waiting);
 
             // 큐에 대기 중인 요청 개수 반환
@@ -180,7 +181,8 @@ public class VideoController {
         System.out.println("(Controller) insert 요청");
         String savedName0 = file.getOriginalFilename();
         String randomUUID = UUID.randomUUID().toString(); // 랜덤한 UUID 생성
-        String savedName = randomUUID + savedName0;
+//        String savedName = randomUUID + savedName0;
+        String savedName = randomUUID;
         long videoSize = file.getSize();
 
 
@@ -258,7 +260,10 @@ public class VideoController {
 
         Thread.sleep(10000);
 
-        int video_id=videoService.findVideosByVideoLink(video_link);
+//        int video_id=videoService.findVideosByVideoLink(video_link);
+        VideoDTO video=videoService.findVideosByVideoLink(video_link);
+        int video_id=video.getVideo_id();
+        String email=video.getEmail();
 
         //ai 변환 성공 후
 
@@ -269,22 +274,24 @@ public class VideoController {
         if (aiResponse != null && aiResponse.getStatusCode().is2xxSuccessful()) {
             AIResponse responseBody = aiResponse.getBody();
             String result = responseBody.getResult();
-            //System.out.println("AI Server Response: " + result);
-//            long expirationTimeInMilliseconds2 = 3600000;
+            System.out.println("AI Server Response: " + result);
+
             long expirationTimeInMilliseconds = 604800000;
             String signedURL2 = fileUploadService.generateSignedURL2(result, expirationTimeInMilliseconds);
+            videoService.updateUpscaleState(video_id,signedURL2);
+
 //            vo.setOutput_url(signedURL2);
 //            videoService.save(vo);
-//
-//            MailDTO mailDto = new MailDTO();
-//            mailDto.setAddress(email);  // 이메일 주소 설정
-//            mailDto.setTitle("Video Uploaded");
-//            mailDto.setContent("Your video has been successfully uploaded!");
-//            System.out.println("비디오 컨트롤러:"+mailDto);
-//            String emailUrl = backendUrl + "/email/send";
+
+            MailDTO mailDto = new MailDTO();
+            mailDto.setAddress(email);  // 이메일 주소 설정
+            mailDto.setTitle("Video Uploaded");
+            mailDto.setContent("Your video has been successfully uploaded!");
+            System.out.println("비디오 컨트롤러:"+mailDto);
+            String emailUrl = backendUrl + "/email/send";
 
             // 이메일 전송 요청
-//            ResponseEntity<String> response = restTemplate.postForEntity(emailUrl, mailDto, String.class);
+            ResponseEntity<String> response = restTemplate.postForEntity(emailUrl, mailDto, String.class);
 
         } else {
             // AI 서버 요청 실패 처리
@@ -292,8 +299,8 @@ public class VideoController {
         }
 
 
-        VideoDTO updatedVideo =videoService.updateUpscaleState(video_id);
-        System.out.println(updatedVideo);
+//        VideoDTO updatedVideo =videoService.updateUpscaleState(video_id);
+//        System.out.println(updatedVideo);
 
         return ResponseEntity.ok(video_link);
     }
