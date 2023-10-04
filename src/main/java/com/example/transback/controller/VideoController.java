@@ -228,7 +228,6 @@ public class VideoController {
         System.out.println("큐에서 꺼낸 요청 정보:");
         System.out.println("video_link: " + video_link);
 
-
         ResponseEntity<String> response2=aiTransfer(video_link);
 //        System.out.println(response2);
 
