@@ -18,6 +18,10 @@
       <sourceFolder url="file://$MODULE_DIR$/../../src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../src/test/resources" type="java-test-resource" />
     </content>
+    <content url="file://$MODULE_DIR$/../../src/test">
+      <sourceFolder url="file://$MODULE_DIR$/../../src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../src/test/resources" type="java-test-resource" />
+    </content>
     <content url="file://$MODULE_DIR$/../../trans-back/src/test">
       <sourceFolder url="file://$MODULE_DIR$/../../trans-back/src/test/java" isTestSource="true" />
     </content>
