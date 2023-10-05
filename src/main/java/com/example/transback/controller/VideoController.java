@@ -182,8 +182,8 @@ public class VideoController {
         String savedName0 = file.getOriginalFilename();
         String randomUUID = UUID.randomUUID().toString(); // 랜덤한 UUID 생성
 //        String savedName = randomUUID + savedName0;
-//        String savedName = randomUUID+".mp4";
-        String savedName=savedName0;
+        String savedName = randomUUID+".mp4";
+//        String savedName=savedName0;
 
         long videoSize = file.getSize();
 
