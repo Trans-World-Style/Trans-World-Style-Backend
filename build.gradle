@@ -50,8 +50,8 @@ dependencies {
 	testImplementation 'org.mockito:mockito-core:3.12.4'
 
 	//config client
-//	implementation 'org.springframework.boot:spring-boot-starter-actuator'
-//	implementation 'org.springframework.cloud:spring-cloud-starter-config'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.cloud:spring-cloud-starter-config'
 
 	//scg
 	implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
