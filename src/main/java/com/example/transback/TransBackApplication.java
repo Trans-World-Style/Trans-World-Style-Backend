@@ -12,4 +12,3 @@ public class TransBackApplication {
 		SpringApplication.run(TransBackApplication.class, args);
 	}
 }
-
