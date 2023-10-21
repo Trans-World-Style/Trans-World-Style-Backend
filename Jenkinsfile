@@ -5,8 +5,7 @@ commonPipeline {
     manifestDir = 'k8s/product/backend/spring-gateway'
     manifestFile = 'spring-gateway-deploy.yaml'
     manifestBranch = 'main'
-    CONFIG_MAP_NAME = params.CONFIG_MAP_NAME ?: 'spring-gateway-configmap'
-    CONFIG_MAP_NAMESPACE = params.CONFIG_MAP_NAMESPACE ?: 'prod'
-    CONFIG_FILE_NAME = params.CONFIG_FILE_NAME ?: 'application-gateway-prod.properties'
-    CONFIG_MAP_MOUNT_PATH = params.CONFIG_MAP_MOUNT_PATH ?: '/config'
+    CONFIG_MAP_NAME = 'spring-gateway-configmap'
+    CONFIG_FILE_NAME = 'application-gateway-prod.properties'
+    CONFIG_MAP_MOUNT_PATH = '/config'
 }
