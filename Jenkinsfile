@@ -10,3 +10,4 @@ commonPipeline {
     CONFIG_FILE_NAME = 'application-gateway-prod.properties'
     CONFIG_MAP_MOUNT_PATH = '/config'
 }
+
