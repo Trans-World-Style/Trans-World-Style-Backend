@@ -7,5 +7,5 @@ commonPipeline {
     manifestBranch = 'main'
     CONFIG_MAP_NAME = 'spring-gateway-configmap'
     CONFIG_FILE_NAME = 'application-gateway-prod.properties'
-    CONFIG_MAP_MOUNT_PATH = '/config'
+    CONFIG_MAP_MOUNT_PATH = 'src/main/resources'
 }
