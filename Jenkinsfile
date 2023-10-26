@@ -8,4 +8,5 @@ commonPipeline {
     CONFIG_MAP_NAME = 'spring-member-configmap'
     CONFIG_FILE_NAME = 'application-member-prod.properties'
     CONFIG_MAP_MOUNT_PATH = 'src/main/resources'
+    SECRET_NAME = 'spring-member-secret'
 }
