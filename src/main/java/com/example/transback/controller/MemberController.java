@@ -25,7 +25,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
-@RefreshScope
+//@RefreshScope
 @RequestMapping("/member")
 public class MemberController {
 
