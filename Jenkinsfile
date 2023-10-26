@@ -8,4 +8,5 @@ commonPipeline {
     CONFIG_MAP_NAME = 'spring-gateway-configmap'
     CONFIG_FILE_NAME = 'application-gateway-prod.properties'
     CONFIG_MAP_MOUNT_PATH = 'src/main/resources'
+    SECRET_NAME = 'spring-gateway-secret'
 }
