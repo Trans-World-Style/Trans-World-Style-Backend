@@ -55,7 +55,6 @@ dependencies {
 
 	//scg
 	implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
-
 }
 
 dependencyManagement {
