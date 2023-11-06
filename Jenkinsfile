@@ -8,5 +8,4 @@ commonPipeline {
     CONFIG_MAP_NAME = 'spring-video-configmap'
     CONFIG_FILE_NAME = 'application-video-prod.properties'
     CONFIG_MAP_MOUNT_PATH = 'src/main/resources'
-    SECRET_NAME = 'spring-video-secret'
 }
